@@ -1,0 +1,5308 @@
+<html>
+<head>
+<title>Command Lines</title>
+<!--https://goo.gl/y4tZTk-->
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="jquery-ui.min.css">
+<style>
+/*elememts*/	
+	* {
+		margin: 0;
+		padding: 0;
+		font-family: segoe ui, arial, sans serif;
+		font-stretch: condensed;
+		font-weight: lighter;
+		font-size: 18px;
+	}
+	body {
+	    background-color: #020510;
+	    user-select: none;
+	}
+	h2 {
+		font-size: 1.8em;
+		margin-bottom: 4px;
+	}
+	h3 {
+		font-size: 1.4em;
+		margin-bottom: 4px;
+	}
+	h5 {
+		font-size: 0.7em;
+		font-stretch: normal;
+		font-weight: bold;
+		text-transform: uppercase;
+		color: #f0f0f0;
+		margin-top: 20px;
+	}
+	a {
+		text-decoration: none;
+		font-weight: bolder;
+	}
+	a:hover {
+		color: #fff;
+	}
+	b {
+		font-weight: bolder;
+	}
+	button {
+		background-color: #363b49;
+		border: none;
+		height: 36;
+		width: 172;
+		margin: 0;
+	    padding: 6;
+		border-radius: 3px;
+	    padding-left: 8;
+	    padding-right: 8;
+		margin-left: 6px;
+	}
+	button:hover {
+		background-color: #1f629b;
+		color: #fff;
+		transition: background-color 50ms ease;
+	}
+	input {
+		-webkit-appearance: none;
+	    -moz-appearance: none;
+	    appearance: none;
+	    border:none;
+	    height: 34;
+	    padding: 8;
+	    font-size: 0.94em;
+	    background-color: #020510;
+	}
+	input:focus {
+	    background-color: #010208;
+	}
+	textarea {
+		padding: 8px;
+		resize: none;
+		word-wrap: break-word;
+		width: 100%;
+		height: 360px;
+		border: none;
+	    background-color: #363b49;
+	    margin-bottom: 2px;
+	}
+	select {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		padding: 2px;
+		font-size: 1em;
+		color: #ced5e1;
+		background-color: #363b49;
+		border: none;
+		padding-right: 5px;
+		padding-left: 5px;
+	}
+	input[type=checkBox] {
+		height: 28px;
+		width: 44px;
+		background-color: #686b76;
+		border: 4px solid #363b49;
+		border-right: 20px solid #363b49;
+		transition: border 100ms ease;
+	}
+	input[type=checkBox]:checked {
+		background-color: #248ee7;
+		border: 4px solid #363b49;
+		border-left: 20px solid #363b49;
+		transition: border 100ms ease;
+	}
+	::selection {
+	  background: #3f82ba;
+	}
+	::-moz-selection {
+	  background: #3f82ba;
+	}
+
+/*Objects*/
+	input.seamless {
+		margin:0;
+		padding: 0;
+		background-color: transparent !important;
+		border: 0;
+		outline: none;
+	}
+	.hidden {
+		display: none;
+	}
+	#blackout {
+		background-color: #000000;
+		height: 100%;
+		width: 100%;
+		top: 0;
+		left: 0;
+		position: fixed;
+		z-index: 5;
+		opacity: 0.7;
+		display: none;
+	}
+	#noJS {
+		margin-top: 36px;
+	}
+	.bar {
+		width: 100%;
+		height: 38;
+		background-color: #1f212f;
+		text-align: center;
+	}
+	.bar span {
+		margin-top: 12px;
+		font-size: 1.3em;
+	}
+	#credit {
+		font-size: 1.0em;
+		margin-top: 8px;
+		font-stretch: condensed;
+	}
+	#window {
+		display: block;
+		margin-right: auto;
+		margin-left: auto;
+		margin-top: 48px;
+		margin-bottom: 20px;
+		width: 732px;
+		padding: 18px;
+		background-color: #1f212f;
+		text-align: center;
+	}
+	#frame {
+		margin-bottom: 20px;
+	}
+	#frame .cmd {
+		width: 100%;
+		text-align: left;
+		height: 96px;
+		margin-bottom:0;
+	}
+	.cmdc {
+		float: left;
+		height: 100%;
+		width: 128px;
+	}
+	.block {
+		background-size: 96px;
+		width: 96px;
+		background-color: #000000;
+		position: relative;
+		z-index: 3;
+	}
+	.block.Impulse {
+		background-image: url(default/command_block_side.png);
+		transition: background-image 80ms linear;
+	}
+	.block.Chain {
+		background-image: url(default/chain_command_block_side.png);
+		transition: background-image 80ms linear;
+	}
+	.block.Repeat {
+		background-image: url(default/repeating_command_block_side.png);
+		transition: background-image 80ms linear;
+	}
+	.block.Impulse.conditional {
+		background-image: url(default/command_block_conditional.png);
+		transition: background-image 80ms linear;
+	}
+	.block.Chain.conditional {
+		background-image: url(default/chain_command_block_conditional.png);
+		transition: background-image 80ms linear;
+	}
+	.block.Repeat.conditional {
+		background-image: url(default/repeating_command_block_conditional.png);
+		transition: background-image 80ms linear;
+	}
+	.block .commandlabel {
+		background-color: rgba(1, 5, 28, .65);
+		border-top-left-radius: 5px;
+		position: absolute;
+		height: 24px;
+		width: 28px;
+		bottom: 0;
+		right: 0;
+		text-align: center;
+		padding-top: 4px;
+		color: #fff !important;
+		font-weight: bolder;
+	}
+	.block .labelNBT {
+		background-color: rgba(220, 90, 4, .01);
+		border-top-right-radius: 5px;
+		position: absolute;
+		min-width: 28px;
+		bottom: 0;
+		left: 0;
+		text-align: center;
+		padding: 4px;
+		padding-bottom: 0;
+		padding-top: 0;
+		background-opacity: 0.65;
+		color: #fff;
+		cursor: default;
+		font-weight: bolder;
+		overflow: hidden;
+		height: 0;
+		transition: height 100ms linear;
+		color: #fff !important;
+	}
+	.block:not(.plusNBT):hover .labelNBT {
+		background-color: rgba(20, 180, 30, .55);
+		height: 24px;
+		animation: showLabel 700ms linear;
+	}
+	.block.plusNBT .labelNBT {
+		background-color: rgba(220, 90, 4, .55);
+		height: 24px;
+		transition: height 100ms linear;
+	}
+	body div.cmd div.block div.labelNBT:hover {
+		background-color: rgba(56, 200, 60, .99);
+		color: #fff;
+	}
+	body div.cmd div.block.plusNBT .labelNBT:hover {
+		background-color: rgba(220, 90, 4, .99);
+	}
+	.cmd .NBT {
+		display: none;
+		overflow: hidden;
+	}
+	.ui {
+		width: 612px;
+		padding-left: 12;
+	}
+	.ui input {
+		width: 100%;
+		margin-top: 8px;
+	}
+	.ui button {
+		margin-top: 4px;
+		margin-left: 15px;
+		width: 166px;
+	}
+	button.close {
+		width: 69px !important;
+	}
+	button.first {
+		margin-left: 0;
+	}
+	.link {
+		display: inline;
+		font-weight: normal;
+		cursor: pointer;
+	}
+	.link:hover {
+		text-decoration: underline;
+	}
+	button.add_cmd_button {
+		width: 130px;
+	}
+
+/*Dialogs*/
+	#getCodeArea {
+		width: 100%;
+	}
+	textarea#oneCommandArea {
+		font-size: 0.8em;
+		font-weight: normal;
+		word-wrap: break-word;
+	}
+	.dialog {
+		display: none;
+		position: fixed;
+		left: 0;
+		right: 0;
+		top:0;
+		margin-right: auto;
+		margin-left: auto;
+		margin-top: 42;
+		width: 480px;
+		padding: 24px;
+		background-color: #1f212f;
+		z-index: 6;
+		box-shadow: 0 0px 40px #000;
+	}
+	.dialog button {
+		float: right;
+		margin-top: 14px;
+	}
+	button.inline-button {
+		width: 20%;
+		height: 34px;
+		margin: 0;
+	}
+	.dialog#getCode {
+		top: 26%
+	}
+	#getCodeArea {
+		width: 79%;
+	}
+	#shortenError {
+		position: absolute;
+
+	}
+	#settings {
+		width: 310px;
+	}
+	.setting button {
+		width: 128px;
+	}
+	.dialog.wide {
+		width: 800px;
+	}
+	#replace {
+		width: 356px;
+		top: auto;
+		bottom: 0;
+		padding-top: 3;
+		padding-bottom: 3;
+		text-align: center;
+	}
+	#replace button {
+		font-size: 0.84em;
+		width: 95px;
+		height: 30px;
+		margin: 0;
+		padding: 2;
+		margin-left: 4px;
+	}
+	#replaceLog {
+		display: none;
+	}
+	#replace .row {
+		text-align: right;
+	}
+	#replace .row span {
+		margin-right: 10px;
+	}
+	.row {
+		width: 100%;
+		margin: 0px;
+		height: 32px;
+		padding: 2px;
+		text-align: left;
+	}
+	.row .optionin {
+		display: inline-block;
+		float: right;
+		clear:right;
+	}
+	.row .optionleft {
+		display: inline-block;
+		float: left;
+		clear: left;
+		margin-top: 3px;
+	}
+	#replace .input {
+		width: 200px;
+	}
+	#NBT .optionin {
+		width: 276px;
+	}
+	#NBT .row {
+		margin-top: 12px;
+	}
+	div.dialog#selector {
+		width: 694px;
+		height: 96%;
+		padding: 0;
+		margin-top: 0;
+		background-color: transparent !important;
+		box-shadow: none;
+	}
+	#selector iframe {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		border: none;
+		width: 100%;
+		height: 100%;
+	}
+	#help {
+		width: 600px;
+		overflow-y: auto;
+		max-height: calc(100% - 48px);
+		margin-top: 0;
+	}
+	#help p {
+		padding: 10px;
+		font-size: 0.96em;
+		color: #c4c4cf;
+	}
+	#help p:nth-child(even) {
+		background-color: #2a3044;
+	}
+	#help p b {
+		font-size: 0.96em;
+	}
+	.broad_button {
+		height: 26;
+		width: calc(100%-12px);
+		margin: 0;
+	    padding: 4;
+		border-radius: 4px;
+	    padding-left: 8;
+	    padding-right: 8;
+		cursor: pointer;
+	}
+	.broad_button:hover {
+		background-color: #1f629b;
+		color: #fff;
+		transition: background-color 50ms ease;
+	}
+	body .dialog div.grayed {
+		color: #92949b !important;
+		display: inline;
+		margin-left: 10px;
+		font-size: 0.94em;
+	}
+
+/*Menu*/
+	#menubar ul {
+		list-style: none;
+		text-align: center;
+	}
+	#menubar ul#main-ul {
+		float: right;
+		display: inline-block;
+	}
+	#menubar li {
+		background-color: #2f445f;
+		border: none;
+		height: 30;
+		width: 140px;
+		margin: 0;
+	    padding-left: 2;
+	    padding-right: 2;
+	    padding-top: 8px;
+	    display: inline-block;
+	    cursor: default;
+	}
+	#menubar ul ul {
+		display: none;
+		position: absolute;
+		z-index: 4;
+		margin-top: 5px;
+		margin-left: -2px;
+		background-color: #1f212f;
+	}
+	#menubar ul ul li {
+		float: none;
+		display: block;
+		margin-top: 2px;
+	}
+	#menubar ul li:hover > ul {
+		display: block;
+	}
+	#menubar li:hover {
+		background-color: #1f629b;
+	}
+
+	#menubar li#export_button {
+		background-color: #0a9f07;
+		color: white;
+		font-weight: normal;
+	}
+	#menubar li#export_button:hover {
+		background-color: #18d214;
+		color: white;
+		font-weight: bolder;
+	}
+
+/*LineBar*/
+	#menubar {
+		text-align: left;
+		position: fixed;
+		top: 0;
+		z-index: 4;
+	}
+	#add_line {						/*ADD LINE*/
+		height: 34px;
+		width: 22px;
+		background-color: #2f3a5c;
+		display: inline-block;
+		margin-left: 4px;
+		margin-top: 4px;
+		float: left;
+		font-size: 1.7em;
+		padding-left: 7px;
+		cursor: default;
+		font-family: arial;
+	}
+	#add_line:hover {
+		background-color: #1f629b;
+	}
+	#linebar {						/*BAR*/
+		text-align: left;
+		white-space: nowrap;
+		overflow: hidden;
+		display: inline-block;
+		float: left;
+	}
+	.lineTab {						/*TABS*/
+		height: 34px;
+		width: 174px;
+		background-color: #2f3a5c;
+		display: inline-block;
+		margin-left: 4px;
+		margin-top: 4px;
+		border-top-left-radius: 6px;
+		border-top-right-radius: 6px;
+		float: left;
+		box-shadow: inset 0px -10px 30px -16px #000;
+	}
+	.lineTab.open {
+		background-color: #020510;
+		box-shadow: none;
+	}
+	.lineTab:hover {
+		background-color: #384a7b;
+	}
+	.lineTab.open:hover {
+		background-color: #04091d;
+		transition: background 200ms ease;
+	}
+	.lineTab div.lineID {			/*TAB SPAN*/
+		margin-top: 6px;
+		margin-left: 6px;
+		cursor: default;
+		overflow: hidden;
+		font-size: 1em;
+	}
+	.lineClose {					/*TAB CLOSE*/
+		float: right;
+		width: 22px;
+		margin: 6px;
+		margin-right: 4px;
+		cursor: default;
+		border-radius: 3px;
+		text-align: center;
+	}
+	.lineClose:hover {
+		background-color: #2d98d2;
+		color: #fff;
+	}
+
+	div#title {						/*TITLE*/
+		font-size: 1.8em;
+		text-align: left;
+		height: 48px;
+	}
+	div#title div {
+		font-size: 1em;
+		display: inline-block;
+		float: left;
+		margin-top: -7px;
+	}
+	div#title input {
+		background-color: transparent !important;
+		border: none;
+		padding: 0;
+		padding-bottom: 7px;
+		float: left;
+		font-size: 1em;
+		margin-top: 1px;
+	}
+	.lineCode {
+		display: none;
+	}
+	.arrow {
+		position: absolute;
+		height: 80px;
+		width: 54px;
+		background-color: #363b49;
+		top: 40%;
+		opacity: 0.4;
+		text-align: center;
+		font-size: 3em;
+		cursor: default;
+		font-weight: lighter;
+		z-index: 2;
+	}
+	.arrow:hover {
+		opacity: 0.9;
+		background-color: #1f629b;
+		z-index: 4;
+	}
+	#arrow_left {
+		border-top-right-radius: 6px;
+		border-bottom-right-radius: 6px;
+	}
+	#arrow_right {
+		right: 0px;
+		border-top-left-radius: 6px;
+		border-bottom-left-radius: 6px;
+	}
+
+/*Animation*/
+	@keyframes showLabel {
+		0%		{height: 0px;}
+		86%		{height: 0px;}
+		100%	{height: 24px;}
+	}
+
+/*Aliases*/
+	.dialog#aliases {
+		width: 60%;
+	}
+	#alias_frame {
+		max-height: 600px;
+		overflow-y: auto;
+	}
+	.alias {
+		padding: 4px;
+	}
+	.alias button {
+		margin: 0;
+		height: 34px;
+		width: 40px;
+	}
+	.alias input {
+		width: calc(67% - 26px);
+	}
+	.alias input:first-of-type {
+		width: calc(33% - 26px);
+		margin-right: 6px;
+	}
+	#alias_notes {
+		padding: 10px;
+		padding-top: 14px;
+		padding-bottom: 0;
+		display: inline-block;
+	}
+
+/*ProjectManager*/
+	.dialog#projects {
+		min-width: 400px;
+		max-width: 600px;
+		width: 36%;
+	}
+	#project_frame {
+		min-height: 420px;
+		max-height: 800px;
+		overflow-y: auto;
+	}
+	.project {
+		padding: 4px;
+		padding-top: 8px;
+	}
+	.project .project_tag {
+		display: inline-block;
+		padding-left: 8px;
+		font-size: 0.9em inherit;
+	}
+	.project button.delete {
+		width: 32px;
+	}
+	.project.openProject {
+		background-color: #2a3044;
+		border-radius: 4px;
+		border: 1px solid #888;
+	}
+	.project button {
+		margin: 0;
+		width: 80px;
+		margin-left: 6px;
+		cursor: pointer;
+	}
+	.project input.project_name {
+		width: calc(100% - 212px);
+		font-size: 1.2em;
+		font-family: segoe ui, arial, sans serif !important;
+	}
+	.project input:disabled {
+		background-color: transparent !important;
+	}
+
+/*Colorscheme*/
+	body#dark {
+		background-color: #020510;
+	}
+	body#dark * {
+		color: #ddd;
+	}
+	body#dark .dialog div.grayed {
+		color: #92949b;
+	}
+
+
+
+	body#gray {
+		background-color: #1e2124;
+	}
+	body#gray * {
+		color: #c0c0ce;
+	}
+	body#gray .bar {
+		background-color: #131417;
+	}
+	body#gray #window {
+		background-color: #36393e;
+	}
+	body#gray input {
+		background-color: #494c52;
+		color: #dadade;
+	}
+	body#gray textarea {
+		background-color: #5b5e63;
+		color: #dadade;
+	}
+	body#gray button {
+		background-color: #585c63;
+	}
+	body#gray button:hover {
+		background-color: #6F757F;			
+	}
+	body#gray .btn {
+		background-color: #585c63;	
+	}
+	body#gray .btn:hover {
+		background-color: #6F757F;			
+	}
+	body#gray input[type=checkBox] {
+		background-color: #99a;
+		border-color: #4c4d4f;
+	}
+	body#gray .dialog {
+		background-color: #2f3338;
+	}
+	body#gray select {
+		background-color: #4c4d4f;
+	}
+	body#gray .lineTab {
+		background-color: #585c63;
+	}
+	body#gray .lineTab.open {
+		background-color: #1e2124;
+	}
+	body#gray .lineTab:not(.open):hover {
+		background-color: #6F757F;
+	}
+	body#gray .project.openProject {
+		background-color: #44464e;
+	}
+	body#gray #help p:nth-child(even) {
+		background-color: #44464e;
+	}
+	body#gray .dialog div.grayed {
+		color: #92949b;
+	}
+
+
+
+	body#light {
+		background-color: #f0f0f0;
+	}
+	body#light ::selection {
+		background-color: #9ad3ff;
+	}
+	body#light * {
+		color: #333;
+	}
+	body#light #window {
+		background-color: #d7dadf;
+	}
+	body#light button {
+		background-color: #7cc1f6;
+	}
+	body#light button:hover {
+		background-color: #82c9ff;			
+	}
+	body#light .btn {
+		background-color: #7cc1f6;	
+	}
+	body#light .btn:hover {
+		background-color: #82c9ff;			
+	}
+	body#light input {
+		background-color: #fff;
+	}
+	body#light textarea {
+		background-color: #fff;
+	}
+	body#light #menubar {
+		background-color: #9ad3ff;
+	}
+	body#light div.lineTab {
+		background-color: #18a2f4;
+		color: ;
+	}
+	body#light div.lineTab.open {
+		background-color: #f0f0f0;
+		color: ;
+	}
+	body#light .lineTab:not(.open):hover {
+		background-color: #4bbaf9;
+	}
+	body#light #menubar li {
+		background-color: #69b5ef;
+	}
+	body#light #menubar li:hover {
+		background-color: #82c9ff;
+	}
+	body#light #add_line {
+		background-color: #69b5ef;
+	}
+	body#light #add_line:hover {
+		background-color: #82c9ff;
+	}
+	body#light #menubar ul ul {
+		background-color: #9ad3ff;
+	}
+	body#light .broad_button:hover {
+		background-color: #82c9ff;
+	}
+	body#light .dialog {
+		background-color: #d7dadf;
+	}
+	body#light select {
+		background-color: #69b5ef;
+	}
+	body#light input[type=checkBox] {
+		background-color: #fff;
+		border-color: #69b5ef;
+	}
+	body#light #help p:nth-child(even) {
+		background-color: #f0f0f0;
+	}
+	body#light .cmd:not(.active) {
+		filter: grayscale(100%)
+	}
+	body#light .project.openProject {
+		background-color: #f0f0f0;
+	}
+	body#light .dialog div.grayed {
+		color: #92949b;
+	}
+	body#light input.highlight {
+		border: 2px solid #2297f1;
+	}
+
+/*Override*/
+	body::after{
+	    position:absolute; width:0; height:0; overflow:hidden; z-index:-1;
+	    background-image: url(default/command_block_side.png) url(default/chain_command_block_side.png) url(default/repeating_command_block_side.png) url(default/command_block_consitional.png) url(default/chain_command_block_consitional.png) url(default/repeating_command_block_consitional.png) url(x11/command_block_side.png) url(x11/chain_command_block_side.png) url(x11/repeating_command_block_side.png) url(x11/command_block_conditional.png) url(x11/chain_command_block_conditional.png) url(x11/repeating_command_block_conditional.png);
+
+	}
+	body.x11 .block.Impulse {
+		background-image: url(x11/command_block_side.png);
+		transition: background-image 80ms linear;
+	}
+	body.x11 .block.Chain {
+		background-image: url(x11/chain_command_block_side.png);
+		transition: background-image 80ms linear;
+	}
+	body.x11 .block.Repeat {
+		background-image: url(x11/repeating_command_block_side.png);
+		transition: background-image 80ms linear;
+	}
+	body.x11 .block.Impulse.conditional {
+		background-image: url(x11/command_block_conditional.png);
+		transition: background-image 80ms linear;
+	}
+	body.x11 .block.Chain.conditional {
+		background-image: url(x11/chain_command_block_conditional.png);
+		transition: background-image 80ms linear;
+	}
+	body.x11 .block.Repeat.conditional {
+		background-image: url(x11/repeating_command_block_conditional.png);
+		transition: background-image 80ms linear;
+	}
+	body.noLabels .block .commandlabel {
+		display: none;
+	}
+
+	body.compact #window div.cmd {
+		height: 48px !important;
+	}
+	body.compact .control {
+		display: none;
+	}
+	body.compact #window {
+		width: 100%;
+		box-sizing: border-box;
+	}
+	body.compact div.ui button {
+		height: 40px;
+		margin-top: 4px;
+		margin-bottom: 4px;
+		margin-left: 4px;
+		width: 128px;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+	body.compact .block {
+		background-size: 48px;
+		width: 48px;
+	}
+	body.compact .labelNBT {
+		font-size: 0.8em;
+	}
+	body.compact .ui {
+		width: calc(100% - 84px);
+		margin: 0px;
+		padding: 0px;
+	}
+	body.compact .ui * {
+		display: inline-block;
+		float: right;
+	}
+	body.compact .cmd input {
+		width: 100%;
+		margin: 0;
+		height: 46px;
+		margin-top: 1px;
+		margin-bottom: 1px;
+	}
+	body.compact .commandlabel {
+		background-color: transparent;
+		text-shadow: 0 0 6px black;
+		font-weight: bold;
+	}
+	body.compact .add_cmd_button {
+		display: none;
+	}
+	body.compact .ui .buttonwrap {
+		position: absolute;
+		display: none
+	}
+	body.compact .cmd.active div.block:hover + .ui .buttonwrap {
+		display: inline-block;
+	}
+	body.compact .cmd.active .ui .buttonwrap:hover {
+		display: inline-block;
+	}
+	body.monospace input:not(#header_input) {
+		font-family: monospace;
+	}
+	body.monospace textarea {
+		font-family: monospace;
+	}
+
+	#frame div:first-of-type .control button:first-of-type {
+		visibility: hidden;
+	}
+	#frame div:last-of-type .control button:last-of-type {
+		visibility: hidden;
+	}
+	input.highlight {
+		border: 2px solid #cccfee;
+	}
+	.cmd:not(.active) {
+		filter: brightness(42%);
+	}
+	.cmd:not(.active) .block .labelNBT {
+		display: none;
+	}
+
+</style>
+<style id="scheme_light" type="none">
+	body {display: none;}
+</style>
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="//cdn.jsdelivr.net/jquery.scrollto/2.1.2/jquery.scrollTo.min.js"></script>
+<script src="https://apis.google.com/js/client.js" type="text/javascript"> </script>
+<script src="jquery-ui.min.js"></script>
+<script type="text/javascript">
+//Declare
+	var newVal = "";
+	var url = "";
+	var command = "";
+	var newCommand = "";
+	var index = 0;
+	var count = 0;
+	var inputLocked = false
+	var inputItem = null;
+	var inputPos = null;
+	var block, obj, type, cond, auto, mt, affCmd, ocDirData, ocDirOpposite, ocDirSign, data, NBT, NBTindex, current, indexPre, nextCmd, delay;
+	var minecarts = [];
+	var affCmds = [];
+	var historyX = [];
+	var fallingblockID = 'falling_block'
+	var minecartID = 'commandblock_minecart'
+	var aecID = 'area_effect_cloud'
+	var asID = 'armor_stand'
+	var queryMax = 436;
+	var completeNx;
+	var isProject = false;
+
+//Program
+$(document).ready(function() {
+	try {
+    	loadSettings()
+		loadProjects()
+	} catch(err) {}
+	if ($('.project').length > 0) {
+		addLine('new-line', 'iun')
+		showDialog('projects', true, true)
+	} else {
+		parseProject('l_new§l;§§iun')
+	}
+	loadBindings()
+	$('#noJS').hide();
+})
+window.onbeforeunload = function(){
+	saveAliases();
+	saveProjects();
+	localStorage.setItem('aliases', $('div#alias_frame').html());
+}
+function occurrences(string, subString, allowOverlapping) {
+
+    string += "";
+    subString += "";
+    if (subString.length <= 0) return (string.length + 1);
+
+    var n = 0,
+        pos = 0,
+        step = allowOverlapping ? 1 : subString.length;
+
+    while (true) {
+        pos = string.indexOf(subString, pos);
+        if (pos >= 0) {
+            ++n;
+            pos += step;
+        } else break;
+    }
+    return n;
+}
+function splitStringAfter(str, maxPartSize){
+
+  const chunkArr = [];
+  let leftStr = str;
+  do {
+
+    chunkArr.push(leftStr.substring(0, maxPartSize));
+    leftStr = leftStr.substring(maxPartSize, leftStr.length);
+
+  } while (leftStr.length > 0);
+
+  return chunkArr;
+}
+function shortFormat(code, shorten, toUrl) {
+	if (shorten == true) {
+		$('#shorts option').each(function (i) {
+			code = code.split($(this).val()).join($(this).attr('label'));
+		})
+	} else {
+		$('#shorts option').each(function (i) {
+			code = code.split($(this).attr('label')).join($(this).val());
+		})
+		code = code.split('$').join(' ')
+	}
+	return code;
+}
+function removeSlash(string) {
+	if (string.substr(0,1) == '/'){
+		string = string.substr(1)
+	}
+	return string;
+};
+(function($) {
+    $.fn.getCursorPosition = function() {
+        var input = this.get(0);
+        if (!input) return; // No (input) element found
+        if ('selectionStart' in input) {
+            // Standard-compliant browsers
+            return input.selectionStart;
+        } else if (document.selection) {
+            // IE
+            input.focus();
+            var sel = document.selection.createRange();
+            var selLen = document.selection.createRange().text.length;
+            sel.moveStart('character', -input.value.length);
+            return sel.text.length - selLen;
+        }
+    }
+})(jQuery);
+(function($) {
+    $.fn.setCursorPosition = function(pos) {
+        var input = this.get(0);
+		         if (input.setSelectionRange) {
+		    input.focus();
+		    input.setSelectionRange(pos, pos);
+		  }
+		  else if (input.createTextRange) {
+		    var range = input.createTextRange();
+		    range.collapse(true);
+		    range.moveEnd('character', pos);
+		    range.moveStart('character', pos);
+		    range.select();
+		  }
+    }
+})(jQuery);
+function loadSettings() {
+	if (localStorage.getItem('scheme') != null) {
+		setColorScheme(localStorage.getItem('scheme'))
+	}
+	if (localStorage.getItem('compactUI') == 'true') {
+		$('body').addClass('compact')
+		$('#compactUI').prop('checked', true)
+	}
+	if (localStorage.getItem('x11') == 'true') {
+		$('body').addClass('x11')
+		$('#x11').prop('checked', true)
+	}
+	if (localStorage.getItem('monospace') == 'true') {
+		$('body').addClass('monospace')
+		$('#monospace').prop('checked', true)
+	}
+	if (localStorage.getItem('noLabels') == 'true') {
+		$('body').addClass('noLabels')
+		$('#noLabels').prop('checked', true)
+	}
+	if (localStorage.getItem('spigot') == 'true') {
+		$('#spigot').prop('checked', true)
+	}
+	if (localStorage.getItem('reverse') == 'true') {
+		$('#reverse').prop('checked', true)
+	}
+	if (localStorage.getItem('trackoutput') == 'true') {
+		$('#trackoutput').prop('checked', true)
+	}
+	if (localStorage.getItem('markersign') == null) {
+		markersign('None')
+	} else {
+		markersign(localStorage.getItem('markersign'))
+	}
+	if (localStorage.getItem('oldVersion') == 'true') {
+		fallingblockID = 'FallingSand'
+		minecartID = 'MinecartCommandBlock'
+		aecID = 'AreaEffectCloud'
+		asID = 'ArmorStand'
+		$('#oldVersion').prop('checked', true)
+	}
+
+	if (localStorage.getItem('aliases') != null) {
+		$('div#alias_frame').html(localStorage.getItem('aliases'))
+	} else {
+		resetAlias()
+	}
+	if (localStorage.getItem('animationscale') == null) {
+		animationscale('x3')
+	} else {
+		animationscale(localStorage.getItem('animationscale'))
+	}
+	
+	if (localStorage.getItem('ocDir') == null) {
+		ocDir('East');
+	} else {
+		ocDir(localStorage.getItem('ocDir'));
+	}
+}
+
+//UI
+function toggleType(index) {
+	savePoint();
+	block = $('#cmd'+index+' .block')
+	switch (getType(index)) {
+		case 'Impulse':
+			newVal = "Chain";
+			$('#cmd'+index+' .autoB').html('Always Active');
+			break;
+		case 'Chain':
+			newVal = "Repeat";
+			break;
+		case 'Repeat':
+			newVal = "Impulse";
+			break;
+	}
+	block.removeClass('Impulse')
+	block.removeClass('Chain')
+	block.removeClass('Repeat')
+	block.addClass(newVal)
+	$('#cmd'+index+' .typeB').html(newVal);
+}
+function toggleConditional(index) {
+	savePoint();
+	block = $('#cmd'+index+' .block')
+	if (getCond(index, 2) == true) {
+		newVal = "Unconditional"
+		block.removeClass('conditional')
+	} else {
+		newVal = "Conditional"
+		block.addClass('conditional')
+	}
+	$('#cmd'+index+' .conditionalB').html(newVal);
+}
+function toggleAuto(index) {
+	savePoint();
+	current = getAuto(index)
+	if (current == "Always Active") {
+		newVal = "Needs Redstone"
+	} else {
+		newVal = "Always Active"
+	}
+	$('#cmd'+index+' .autoB').html(newVal);
+}
+function toggleActive(index) {
+	if (event.shiftKey) {
+		if ($('#cmd'+index+'.active').length == 0) {
+			$('#cmd'+index).addClass('active')
+			$('#cmd'+index+' input').attr('readonly', false)
+			$('#cmd'+index+' button').attr('disabled', false)
+		} else {
+			$('#cmd'+index).removeClass('active')
+			$('#cmd'+index+' input').attr('readonly', true)
+			$('#cmd'+index+' button').attr('disabled', true)
+		}
+	}
+}
+function lockAll(locked) {
+	if (locked) {
+		$('.cmd').removeClass('active')
+		$('.cmd input').attr('readonly', true)
+		$('.cmd button').attr('disabled', true)
+	} else {
+		$('.cmd').addClass('active')
+		$('.cmd input').attr('readonly', false)
+		$('.cmd button').attr('disabled', false)
+	}
+}
+function c(c) {
+	console.log(c)
+}
+
+//AutoComplete
+function autoComplete(i) {
+	var command = getCommand(i)
+	var pos = $('#cmd'+i+' input').getCursorPosition()
+	var main = command.substr(0,pos)
+	var suffix = command.substr(pos)
+	if (main.substr(0,1) != '/') {
+		main = '/'+main
+	}
+	var level = 0;
+	completeNx = 0;
+	var syntax = []
+	syntax = main.split(' ')
+	var ACList = $('#autoCompleteTop')
+	if (syntax[0] == '/execute' && syntax.length > 5) {
+		var level = 5;
+	}
+	var result = autoCompleteLevel(ACList, syntax, level)
+	if (!result && result !== '0') {} else {
+		syntax.pop()
+		syntax.push(result)
+		$('#cmd'+i+' input').val(syntax.join(' ')+suffix)
+		$('#cmd'+i+' input').setCursorPosition(syntax.join(' ').length)
+	}
+}
+function autoCompleteLevel(ACList, syntax, level) {
+	if (ACList.length == 0) {
+		return false;
+	}
+	var text;
+	var complete = false;
+	var repeatLoop = 0;
+	while (repeatLoop < 2) {
+		repeatLoop++;
+		ACList.children('li').each(function(i) {
+			text = $(this).children('div').text()
+			if ($(this).children('div.wildcard').length) {
+				if (level+1 < syntax.length) {	//Not on End of list, pathfinding
+					if (text == '~') {
+						level += 2;
+					}
+					complete = autoCompleteLevel($(this).children('ul'), syntax, level+1)
+				} else {						//Reached End
+					switch (text) {
+						case '@':
+							if (syntax[level] == '') {
+								hoverSelGen()
+								openSelGen()
+							} else if (syntax[level].substr(0,1) == '@' && syntax[level].substr(2,1) == '[') {
+								complete = autoCompleteSelector(syntax[level])
+							}
+							return false;
+							break;
+						case '~':
+							complete = '~ ~ ~'
+							break;
+						case '#':
+							break;
+						case '#item':
+							complete = autoCompleteCustom(syntax[level], 'itemids');
+							if (complete == false) {
+								complete = autoCompleteCustom(syntax[level], 'blockids')
+							}
+							break;
+						case '#entity':
+							complete = autoCompleteCustom(syntax[level], 'entitynames')
+							break;
+						case '#block':
+							complete = autoCompleteCustom(syntax[level], 'blockids')
+							break;
+						case '#num':
+							if (syntax[level] == '') {
+								complete = '0'
+							} else {
+								var num = parseInt(syntax[level])
+								if (num != NaN && num >= 0 && num <= 14) {
+									complete = num+1;
+								} else if (num == 15) {
+									complete = '0'
+								}
+							}
+							break;
+						case '#obj':
+							autoCompleteObjective()
+							complete = autoCompleteCustom(syntax[level], 'objectivenames')
+							break;
+						case '#team':
+							autoCompleteTeam()
+							complete = autoCompleteCustom(syntax[level], 'teamnames')
+							break;
+						case '#tag':
+							autoCompleteTag()
+							complete = autoCompleteCustom(syntax[level], 'tagnames')
+							break;
+						default:
+							return false;
+							break;
+					}
+				}
+			} else {							//Not Wildcard
+				if (level+1 < syntax.length) {	//NOT LAST
+					if (text.toUpperCase() == syntax[level].toUpperCase()) {
+						complete = autoCompleteLevel($(this).children('ul'), syntax, level+1)
+					}
+				} else if (text.toUpperCase().startsWith(syntax[level].toUpperCase()) && text != syntax[level]) {	//LAST
+					complete = text;
+					return false;
+				} else if (text == syntax[level]) {
+					completeNx = 2
+				} else if (completeNx == 1) {
+					completeNx = 0;
+					complete = text;
+					return false;
+				}
+			}
+			if (completeNx > 0) {completeNx--;}
+		})
+		if (completeNx != 1) {
+			return complete
+		}
+	}
+	return complete;
+}
+function autoCompleteSelector(input) {
+	var complete = false
+	var target = input.substr(1,1)
+	var parts = input.substr(3).split(',')
+	var s = parts[parts.length-1]
+	var nval = s.split('=')
+	if (nval.length == 2) { 			//VALUES
+		switch (nval[0]) {
+			case 'tag':
+				complete = autoCompleteCustom(nval[1], 'tagnames')
+				break;
+			case 'team':
+				complete = autoCompleteCustom(nval[1], 'teamnames')
+				break;
+			case 'type':
+				complete = autoCompleteCustom(nval[1], 'entitynames')
+				break;
+			case 'name':
+				complete = autoCompleteCustom(nval[1], 'namenames')
+				break;
+			default:
+				if (nval[1] == '') {
+					complete = '1'
+				}
+				break;
+		}
+		if (complete) {
+			complete = nval[0]+'='+complete
+		}								//ARGUMENTS
+	} else {
+		if (nval[0].substr(0,6) == 'score_' && nval[0].length >= 8 && '_min'.includes(nval[0].split('_').pop())) {
+			var array = nval[0].split('_')
+			array.pop()
+			complete = array.join('_')+'_min='
+		} else if (nval[0].substr(0,6) == 'score_') {
+			complete = autoCompleteCustom(nval[0].substr(6), 'objectivenames')
+			if (complete) {
+				complete = 'score_' + complete;
+			}
+		} else {
+			complete = autoCompleteCustom(nval[0], 'selectorarguments')
+		}
+	}
+	if (complete) {
+		parts[parts.length-1] = complete
+		return '@'+target+'['+parts.join(',')
+	} else {
+		return false;
+	}
+}
+function autoCompleteCustom(s, src) {
+	var complete = false;
+	completeNx = 0;
+	$('ul#'+src+' li').each(function(i) {
+		if (completeNx) {
+			completeNx = 0;
+			complete = $(this).text()
+			return false;
+		} else if (s == $(this).text()) {
+			completeNx = true
+		} else if (s == '') {
+			complete = $(this).text()
+			return false;
+		} else if ($(this).text().toUpperCase().startsWith(s.toUpperCase())) {
+			complete = $(this).text()
+			return false;
+		}
+	})
+	//if (complete == 'undefined') {complete = false;}
+	return complete;
+}
+function autoCompleteObjective() {
+	$(".cmd input:not(':focus')").each(function(i) {
+		var foundWords = []
+		var words = $(this).val().split(' ')
+		if (words[1] == 'objectives' && words[2] == 'add' && words[3] != undefined) {
+			foundWords.push(words[3])
+		}
+		if (words[0] == '/scoreboard' && words[1] == 'players' && words[2] != 'tag') {
+			foundWords.push(words[4])
+		}
+		if ($(this).val().includes('score_')) {
+			try {
+				$(this).val().match(/score_\w+/g).forEach(function(s) {foundWords.push(s.split('score_').join('').split('_min').join(''))});
+			} catch (err) {}
+		}
+		foundWords.forEach(function(s) {
+			if (s != undefined && $("#objectivenames li:contains('"+s+"')").length == 0) {
+				$('#objectivenames').append('<li>'+s+'</li>')
+			}
+		})
+
+	})
+}
+function autoCompleteTeam() {
+	$(".cmd input:not(':focus')").each(function(i) {
+		var foundWords = []
+		var words = $(this).val().split(' ')
+		if (words[1] == 'teams' && words[2] != 'leave' && words[3] != undefined) {
+			foundWords.push(words[3])
+		}
+		if ($(this).val().includes('team=')) {
+			try {
+				$(this).val().match(/team=\w+/g).forEach(function(s) {foundWords.push(s.substr(5))});
+			} catch (err) {}
+		}
+		if ($(this).val().includes('team=!')) {
+			$(this).val().match(/team=!\w+/g).forEach(function(s) {foundWords.push(s.substr(6))});
+		}
+		foundWords.forEach(function(s) {
+			if (s != undefined && $("#teamnames li:contains('"+s+"')").length == 0) {
+				$('#teamnames').append('<li>'+s+'</li>')
+			}
+		})
+	})
+}
+function autoCompleteTag() {
+	$(".cmd input:not(':focus')").each(function(i) {
+		var foundWords = []
+		var words = $(this).val().split(' ')
+		if (words[2] == 'tag' && words[5] != undefined) {
+			foundWords.push(words[5])
+		}
+		if ($(this).val().includes('tag=')) {
+			try {
+				$(this).val().match(/tag=\w+/g).forEach(function(s) {foundWords.push(s.substr(4))});
+			} catch (err) {}
+		}
+		if ($(this).val().includes('tag=!')) {
+			$(this).val().match(/tag=!\w+/g).forEach(function(s) {foundWords.push(s.substr(5))});
+		}
+		foundWords.forEach(function(s) {
+			if (s != undefined && $("#tagnames li:contains('"+s+"')").length == 0) {
+				$('#tagnames').append('<li>'+s+'</li>')
+			}
+		})
+	})
+}
+function autoCompleteName() {
+	$(".cmd input:not(':focus')").each(function(i) {
+		var foundWords = []
+		if ($(this).val().includes('name=')) {
+			try {
+				$(this).val().match(/name=\w+/g).forEach(function(s) {foundWords.push(s.substr(5))});
+			} catch (err) {}
+		}
+		if ($(this).val().includes('name=!')) {
+			$(this).val().match(/name=!\w+/g).forEach(function(s) {foundWords.push(s.substr(6))});
+		}
+		if ($(this).val().includes('CustomName:')) {
+			$(this).val().match(/CustomName:"?\w+"?/g).forEach(function(s) {foundWords.push(s.split('"').join('').substr(11))});
+		}
+		foundWords.forEach(function(s) {
+			if (s != undefined && $("#namenames li:contains('"+s+"')").length == 0) {
+				$('#namenames').append('<li>'+s+'</li>')
+			}
+		})
+	})
+}
+
+//Window
+function showDialog(dialog, blackout, noEscape) {
+	$('.dialog').fadeOut(0)
+	if (noEscape) {
+		$('#blackout').attr("onClick", "")
+	} else {
+		$('#blackout').attr("onClick", "hideDialog()")
+	}
+	$('.dialog#' + dialog).fadeIn(mt)
+	if (blackout != false && $('#blackout').is(":visible") == false) {
+		$('#blackout').fadeIn(mt)
+	}
+	if (blackout == false) {
+		$('#replace1').focus()
+	}
+}
+function hideDialog() {
+	$('#blackout').fadeOut(mt)
+	$('.dialog').fadeOut(mt)
+}
+$(window).resize(function() {
+	setLineWidth(true)
+})
+function showConfirmDialog(msg, callback, args, cancel) {
+	if (cancel == undefined) {cancel = 'hideDialog()'}
+	$('.dialog#confirm h3').text(msg)
+	$('.dialog#confirm button#confirmBtn').attr('onclick', callback+'('+args+')')
+	$('.dialog#confirm button#confirmBtn').attr('onclick', callback+'('+args+')')
+	showDialog('confirm')
+}
+
+//Get Values
+function getType(i, syn) {
+	var args = [];/*
+	0 = original;
+	1 = short;
+	2 = setblock;
+	3 = smelt;
+	4 = emoji*/
+	if (syn == undefined) {syn = 0;}
+	switch ($('#cmd'+i+' .typeB').text()) {
+		case 'Impulse':
+			args = ['Impulse','i','','impulse', 'imp']
+			break;
+		case 'Chain':
+			args = ['Chain','c','chain_','chain', 'chain']
+			break;
+		case 'Repeat':
+			args = ['Repeat','r','repeating_','repeating', 'rep']
+			break;
+		default:
+			args = ['Impulse','i','','impulse', 'imp']
+			break;
+	}
+	return args[syn]
+}
+function getCond(i, syn) {
+	var args = [];/*
+	0 = original;
+	1 = short;
+	2 = boolean;
+	3 = emoji*/
+	if (syn == undefined) {syn = 0;}
+	switch ($('#cmd'+i+' .conditionalB').text()) {
+		case 'Conditional':
+			args = ['Conditional','c',true, 'C']
+			break;
+		case 'Unconditional':
+			args = ['Unconditional','u',false, '']
+			break;
+	}
+	return args[syn]
+}
+function getAuto(i, syn) {
+	var args = [];/*
+	0 = original;
+	1 = short;
+	2 = NBT;
+	3 = boolean;*/
+	if (syn == undefined) {syn = 0;}
+	switch ($('#cmd'+i+' .autoB').text()) {
+		case 'Needs Redstone':
+			args = ['Needs Redstone','n','auto:0',false]
+			break;
+		case 'Always Active':
+			args = ['Always Active','a','auto:1',true]
+			break;
+	}
+	return args[syn]
+}
+function getCommand(i) {
+	return $('#cmd'+i+' input').val()
+}
+function selCommand(i,begin) {
+	obj = $('#cmd'+i+' input').eq(0)
+	obj.focus()
+	if (begin == false) {
+		obj.setCursorPosition(obj.val().length)
+	}
+}
+function getCmdCount(code) {
+	var parts = code.split('§§')
+	var cmds = 0;
+	var lines = 0;
+	parts.forEach(function(s) {
+		if (s.length > 0) {
+			switch (s.substr(0,1)) {
+				case 'N':
+					break;
+				case 'l':
+					lines++;
+					break;
+				case 'i':
+					cmds++;
+					break;
+				case 'r':
+					cmds++;
+					break;
+				case 'c':
+					cmds++;
+					break;
+			}
+		}
+	})
+	return [lines, cmds]
+}
+
+//NBT
+function openNBT(index) {
+	showDialog('NBT')
+	NBTindex = index;
+	$('#NBT h3').html('Command Block '+(index+1)+' NBT:')
+	$('#NBT #blockName').val($('#cmd'+index+' .NBT #name').html())
+	$('#NBT #statsType').val($('#cmd'+index+' .NBT #statsType').html())
+	$('#NBT #statsName').val($('#cmd'+index+' .NBT #statsName').html())
+	$('#NBT #statsObjective').val($('#cmd'+index+' .NBT #statsObjective').html())
+}
+function addNBT() {
+	savePoint();
+	hideDialog()
+	$('#cmd'+NBTindex+' .NBT').html('')
+	$('#cmd'+NBTindex+' .block').removeClass('plusNBT')
+	appendNBT('name', $('#NBT #blockName').val())
+	appendNBT('statsType', $('#NBT #statsType').val())
+	appendNBT('statsName', $('#NBT #statsName').val())
+	appendNBT('statsObjective', $('#NBT #statsObjective').val())
+}
+function appendNBT(type, value) {
+	if (value != '' && value != null) {
+		$('#cmd'+NBTindex+' .NBT').append('<div id="'+type+'">'+value+'</div>')
+		$('#cmd'+NBTindex+' .block').addClass('plusNBT')
+	}
+}
+
+//Manage List
+function add(type, command, cond, auto, instant, i) {
+	if (instant != true) {
+		savePoint();
+	}
+	if (i == undefined) {
+		index = $('.cmd').length
+	} else {
+		index = i;
+	}
+	if (type == undefined) {type = "impulse"}
+	if (auto == undefined) {
+		auto = 'Needs Redstone';
+		if (type == 'Chain') {
+			auto = 'Always Active'
+		}
+	}
+	if (cond == undefined) {cond = "Unconditional"}
+	if (command == undefined) {command = ""}
+	newCommand = ['<div class="cmd active" id="cmd' + index + '">',
+		'<div class="cmdc block '+ type +'" onclick="toggleActive('+index+')">',
+		'<div class="labelNBT" onclick="openNBT('+index+');event.stopPropagation()">+NBT</div>',
+		'<div class="commandlabel">'+(index+1)+'</div></div>',
+		'<div class="cmdc ui"><input type="text" value="'+command+'" spellcheck="false" onkeydown="uiKeypress('+index+')"></input>',
+		'<div class="buttonwrap">',
+		'<button type="button" onclick="toggleType(' + index + ')" class="typeB first">'+ type +'</button>',
+		'<button type="button" onclick="toggleConditional(' + index + ')" class="conditionalB">'+ cond +'</button>',
+		'<button type="button" onclick="toggleAuto(' + index + ')" class="autoB">'+ auto +'</button>',
+		'<button type="button" onclick="removeX(' + index + ')" class="close">Delete</button></div></div>',
+		'<div class="NBT"></div></div>'].join('')
+	if (i == undefined) {
+		$('#frame').append(newCommand)
+	} else {
+		$(newCommand).insertAfter($('#cmd'+(index-1)))
+	}
+
+	if (cond == 'Conditional') {
+		$('#cmd'+index+' .block').addClass('conditional')
+	}
+	if (instant != true) {
+		$('#cmd'+index).hide(0)
+		$('#cmd'+index).slideDown(mt)
+	}
+}
+function removeX(index, instant, force) {
+	savePoint();
+	if (index == 0 && $('.cmd').length == 1 && force != true) {
+		return false;
+	}
+	if (instant == true) {
+		$('#cmd'+index).hide(0)
+		saveCommands();
+		$('#cmd'+index).remove()
+		$('.cmd').each(function (i) {
+			start = parseInt($(this).attr('id').replace('cmd',''))
+			if (start != i) {
+				changeIndex($(this), i)
+			}
+		})
+	} else {
+		$('#cmd'+index).hide(mt)
+		setTimeout(function() {
+			saveCommands();
+			$('#cmd'+index).remove()
+			$('.cmd').each(function (i) {
+				start = parseInt($(this).attr('id').replace('cmd',''))
+				if (start != i) {
+					changeIndex($(this), i)
+				}
+			})
+		}, mt);
+	}
+	if ($('.cmd').length < 2) {
+		closeLine(getLineID())
+	}
+	selCommand(index-1,false)
+}
+function removeSelected() {
+	$('.cmd').each(function(i) {
+		if ($(this).hasClass('active')) {
+			$(this).remove()
+		}
+	})
+	$('.cmd').each(function (i) {
+		start = parseInt($(this).attr('id').replace('cmd',''))
+		if (start != i) {
+			changeIndex($(this), i)
+		}
+	})
+}
+function insertAfterX(index, cmd) {
+	savePoint();
+	saveCommands();
+	add('Chain', cmd, undefined, undefined, false, (index+1))
+	$('.cmd').each(function (i) {
+		if (true) {
+			start = $(this)
+			changeIndex(start, i)
+		}
+	})
+	selCommand(index+1)
+}
+function moveUp(index) {
+	if (index > 0) {
+	savePoint();
+		if (mt > 0) {$("#cmd"+index).animate({'margin-left':"-=100px"},mt)}
+		setTimeout(function() {
+			saveCommands();
+			$("#cmd"+(index-1)).before($("#cmd"+index));
+			changeIndex(index, -1);
+			changeIndex((index-1), index);
+			changeIndex(-1, (index-1));
+			if (mt > 0) {$("#cmd"+(index-1)).animate({'margin-left':"+=100px"},mt)}
+		}, mt);
+	}
+	return true;
+}
+function moveDown(index) {
+	if (index < $('.cmd').length-1) {
+		savePoint();
+		if (mt > 0) {$("#cmd"+index).animate({'margin-left':"-=100px"},mt)}
+		setTimeout(function() {
+			saveCommands();
+			$("#cmd"+(index+1)).after($("#cmd"+index));
+			changeIndex(index, -1);
+			changeIndex((index+1), index);
+			changeIndex(-1, (index+1));
+			if (mt > 0) {$("#cmd"+(index+1)).animate({'margin-left':"+=100px"},mt)}
+		}, mt);
+	}
+}
+function duplicateCmds(index) {
+	cmd
+	index = $('.cmd').length-1;
+	$('.cmd.active').each(function() {
+		$(this).clone().insertAfter($('#cmd'+index))
+		$('.cmd').each(function (i) {
+			if (true) {
+				start = $(this)
+				changeIndex(start, i)
+			}
+		})
+		index++;
+	})
+}
+function saveCommands() {
+	var value = "";
+	$('.cmd').each(function (i) {
+		$(this).find('input').attr('value', $(this).find('input').val());
+	})
+	return true;
+}
+function changeIndex(obj, index) {
+	if (obj*0 == 0) {
+		indexPre = obj
+		obj = $('#cmd'+indexPre)
+	} else {
+		var id = obj.get(0).id
+		indexPre = parseInt(id.replace('cmd',''))
+	}
+	current = obj.html();
+	//Replace Function Values
+	current = current.split('('+indexPre+')').join('('+index+')')
+	current = current.split('<div class=\"commandlabel\">'+(indexPre+1)+'</div>').join('<div class=\"commandlabel\">'+(index+1)+'</div>')
+	obj.html(current)
+	//Update ID
+	obj.attr('id', 'cmd'+index)
+}
+function sliceEmptyLine() {
+	if ($('#cmd0 input').val() == "" && $('.cmd').length == 1) {
+		$('#cmd0').remove()
+	}
+}
+function reorder() {
+	setTimeout(function() {
+		$('.cmd').each(function (i) {
+			var obj = $(this)
+			var id = obj.get(0).id
+			start = parseInt(id.replace('cmd',''))
+			if (start != i) {
+				changeIndex($(obj), i)
+			}
+		})
+	}, 30)
+}
+function uiKeypress(i) {
+	if (event.which == 13) {
+		if (i > $('.cmd').length-2) {
+			add('Chain')
+		} else {
+			if (event.shiftKey) {
+				insertAfterX(i)
+			}
+		}
+		$('#cmd'+(i+1)).find('input').first().focus()
+	}
+	if (event.which == 32) {	//SPACE
+		savePoint()
+	}
+	if (event.which == 38) {	//UP
+		event.preventDefault();
+		if (event.shiftKey && inputLocked == false) {
+			inputLocked = true
+			moveUp(i)
+			setTimeout(function() {
+				$('#cmd'+(i-1)).find('input').first().focus()
+				inputLocked = false
+			},mt)
+		} else {
+			$('#cmd'+(i-1)).find('input').first().focus()
+		}
+	}
+	if (event.which == 40) {	//DOWN
+		event.preventDefault();
+		if (event.shiftKey && inputLocked == false) {
+			inputLocked = true
+			moveDown(i)
+			setTimeout(function() {
+				$('#cmd'+(i+1)).find('input').first().focus()
+				inputLocked = false
+			},mt)
+		} else {
+			$('#cmd'+(i+1)).find('input').first().focus()
+		}
+	}
+	if (event.which == 8) {
+		if (getCommand(i) == '' && $('body.compact').length) {
+			event.preventDefault();
+			removeX(i)
+		}
+	}
+	if (event.ctrlKey && event.which == 68) {	//Duplicate
+		event.preventDefault();
+		saveCommands()
+		savePoint()
+		if (event.shiftKey) {
+			duplicateCmds(i)
+		} else {
+			insertAfterX(i, getCommand(i))
+		}
+	}
+	if (event.ctrlKey && event.which == 80) {	//Parse
+		event.preventDefault();
+		saveCommands();
+		savePoint()
+		var command = parseCommand(getCommand(i))
+		if (command.substr(0,1) != '/') {
+			command = '/'+command;
+		}
+		$('#cmd'+i+' input').val(command)
+	}
+	if (event.ctrlKey && event.which == 46) {	//Remove
+		event.preventDefault();
+		removeX(i)
+	}
+	if (event.which == 9) { 			//TAB
+		event.preventDefault();
+		savePoint()
+		autoComplete(i)
+	}
+	if (event.ctrlKey) {
+		if (event.which == 97) {
+			toggleType(i)
+		} else if (event.which == 98) {
+			toggleConditional(i)
+		} else if (event.which == 99) {
+			toggleAuto(i)
+		}
+	}
+}
+$(document).keypress(function() {
+	if(event.ctrlKey) {
+		if (event.which == 90) {
+			event.preventDefault();
+			undo()
+		}
+	}
+	if (event.which == 8) {
+		event.preventDefault();
+	}
+});
+
+
+//Project Manager
+function parseProject(code) {
+	saveAsProject(true)
+	$('.lineTab').remove()
+	$('.cmd').remove()
+	if (code.substr(0,1) == 'l') {code = code.substr(1)}
+	var parts = code.split('§§l');
+	$.each(parts, function(index, value) {
+		if (value.substr(0,1) == '_') {
+			name = value.split('§§')[0].substr(1);
+			name = shortFormat(name, false)
+			value = value.split('§§').splice(1).join('§§');
+		} else {
+			name = 'command-line';
+		}
+		addLine(name, value, true)
+	})
+	if ($('.lineTab').length > 1) {
+		setLineWidth(true)
+		openLine(0)
+	}
+	hideDialog()
+}
+function openProject(obj) {
+	saveAsProject(true)
+	saveProjects();
+	$('.openProject').removeClass('openProject')
+	parseProject(obj.find('.project_data').text())
+	setProjectTitle(obj.find('.project_name').val())
+	obj.addClass('openProject')
+	isProject = true;
+}
+function deleteProject(index) {
+	showDialog('projects', true, true)
+	if ($('.project').eq(index).hasClass('openProject')) {
+		clearLines()
+		$('#project_title').text('')
+	}
+	$('.project').eq(index).remove()
+}
+function loadBindings() {
+	$('#project_frame').on('click', '.projectBtn.open', function() {
+		openProject($(this).parent())
+	})
+	$('#project_frame').on('click', '.projectBtn.delete', function() {
+		showConfirmDialog('Are you sure you want to delete this project?', "deleteProject", $(this).parent().index(), "showDialog('projects')")
+		//
+	})
+	$('#project_frame').on('click', '.projectBtn.rename', function() {
+		var project = $(this).parent()
+		if ($(this).text() == 'Rename') {
+			project.find('.project_name').attr('disabled', false);
+			project.find('.projectBtn.open').attr('disabled', true);
+			project.find('.projectBtn.delete').attr('disabled', true);
+			project.find('.project_name').select()
+			$(this).text('Save')
+		} else {
+			project.find('.project_name').attr('disabled', true);
+			project.find('.projectBtn.open').attr('disabled', false);
+			project.find('.projectBtn.delete').attr('disabled', false);
+			var name = project.find('.project_name').val();
+			if (name != '') {
+				project.find('.project_name').attr('value', name);
+				setProjectTitle(name)
+			} else {
+				project.find('.project_name').val(project.find('.project_name').attr('value'));
+			}
+			$(this).text('Rename')
+		}
+	})
+	$('#project_frame').on('focusout', '.project_name', function() {
+		var project = $(this).parent();
+		setTimeout(function() {
+			project.find('.project_name').attr('disabled', true);
+			project.find('.projectBtn.open').attr('disabled', false);
+			project.find('.projectBtn.delete').attr('disabled', false);
+			project.find('.projectBtn.rename').text('Rename');
+			project.find('.project_name').val(project.find('.project_name').attr('value'));
+		},200)
+	})
+	$('#project_frame').on('keypress', '.project_name', function() {
+		if (event.which == 13) {
+			var project = $(this).parent();
+			project.find('.projectBtn.rename').click()
+		}
+	})
+	$('#project_frame').on('dblclick', '.project_name', function() {
+		var project = $(this).parent();
+		project.find('.projectBtn.rename').click()
+	})
+}
+function addProject(code, name, lines, commands, open) {
+	if (code == undefined) {code = 'l_new'}
+	if (name == undefined) {name = 'New Project'}
+	if (lines == undefined) {lines = 0}
+	if (commands == undefined) {commands = 0}
+	$('.openProject').removeClass('openProject')
+	var newProject = '<div class="project"><div class="project_data hidden">'+code+'</div><input type="text" value="'+name+'" class="project_name" disabled="disabled"></input><button type="button" class="projectBtn delete">X</button><button type="button" class="projectBtn open">Open</button><button type="button" class="projectBtn rename">Rename</button><div class="project_tag"><span class="linecount"></span> Line<span class="line_count_suffix"></span> - <span class="commandcount"></span> Command<span class="command_count_suffix"></span></div></div>'
+	$('#project_frame').append(newProject)
+	setProjectTag($('.project').last(), lines, commands)
+	if (open) {
+		openProject($('.project').last())
+	}
+}
+function importProject() {
+	saveProjects();
+	addProject('l_imported', 'Imported', 0, 0, true)
+	addCommands(true)
+	saveProjects()
+}
+function saveAsProject(onlySave) {
+	var data = generateLink(true);
+	if (isProject) {
+		$('.project.openProject .project_data').text(data);
+	} else if (onlySave != true) {
+		addProject(data, getLineName(0), 0, 0)
+		showDialog('projects', true, true)
+		$('.project').last().find('.projectBtn.rename').click()
+		$('.project').last().find('input.project_name').select()
+		$('.project').last().addClass('openProject')
+		isProject = true;
+	}
+	var numbers = getCmdCount(code)
+	setProjectTag($('.project.openProject'), numbers[0], numbers[1])
+}
+function loadProjects() {
+	if (localStorage.getItem('projects') != null) {
+		var projectArray = $.parseJSON(localStorage.getItem('projects'))
+		if (true) {
+			projectArray.forEach(function(project) {
+				addProject(project.data, project.name, project.lines, project.commands, false)
+			})
+		}
+		$('#project_frame').html(data)
+	} else if (localStorage.getItem('code') != null) {
+		var code = localStorage.getItem('code')
+		var numbers = getCmdCount(code)
+		addProject(code, 'Project', numbers[0], numbers[1], false)
+		localStorage.removeItem('code')
+	}
+}
+function saveProjects() {
+	if (isProject) {
+		var data = generateLink(true);
+		$('.project.openProject').find('.project_data').text(data);
+	}
+	var projectArray = new Array();
+	$('.project').each(function(i) {
+		var project = new Object;
+		project.name = $(this).find('input.project_name').val()
+		project.data = $(this).find('div.project_data').text()
+		project.lines = $(this).find('div.project_tag span.linecount').text()
+		project.commands = $(this).find('div.project_tag span.commandcount').text()
+		projectArray.push(project)
+	})
+	localStorage.setItem('projects', JSON.stringify(projectArray))
+}
+function selectProjectName(obj) {
+	if (obj == 'last') {
+		obj = $('.project').last()
+	}
+	obj.find('.projectBtn.rename').click()
+	obj.find('.project_name').select()
+}
+function setProjectTag(obj, lines, cmds) {
+	obj.find('.project_tag span.linecount').text(lines);
+	obj.find('.project_tag span.commandcount').text(cmds);
+	if (lines == 1) {
+		obj.find('.project_tag span.line_count_suffix').text('');
+	} else {
+		obj.find('.project_tag span.line_count_suffix').text('s');
+	}
+	if (cmds == 1) {
+		obj.find('.project_tag span.command_count_suffix').text('');
+	} else {
+		obj.find('.project_tag span.command_count_suffix').text('s');
+	}
+}
+function setProjectTitle(s) {
+	$('#project_title').text(s+':\xa0\xa0')
+	//
+}
+
+//IO
+function addCommands(overwrite) {
+	savePoint();
+	var type;
+	var cond;
+	var auto;
+	var executor;
+	var input = $('#pasteRawArea').val().split('	').join('');
+	if (overwrite) {
+		$('.lineTab').remove()
+		$('.cmd').remove()
+		if (input.substr(0,1) != '#') {
+			addLine('imported', '', true)
+		}
+	} else {
+		sliceEmptyLine()
+	}
+	if (input.substr(0,7) == '//runJS') {
+		input = runJS(input)
+	}
+	if (input.includes('§§')) {
+		input = input.split('https://JannisX11.github.io/clg/index.html?c=').join('')
+		input = input.split(/&c[1-9]\d*=/g).join('').split('\n').join('§§')
+		parseProject(input)
+	} else if (input.replace('/' ,'').substr(0,7) == 'summon ' && input.includes('falling_block') && input.includes('id:commandblock_minecart,Command:')) {
+		parts = input.split('id:commandblock_minecart,Command:')
+		parts.splice(0,2)
+		parts.forEach(function(s) {
+			s = s.split('Command:').splice(1).join('')
+			s = s.split('}},{').join('')
+			if (s.substr(0,1) == '"' || s.substr(0,2) == '\\"') {
+				s = s.split('\\"').join('')
+				s = s.split('\\').join('')
+			}
+			add('Chain', s, 'Unconditional', 'Always Active', true)
+		})
+
+	} else {
+		var parts = input.split('"').join('&quot;').split('\n')
+		type = 'Chain'
+		cond = 'Unconditional'
+		auto = 'Always Active'
+		executor = '';
+		var x_chain;
+		parts.forEach(function (s, i, o) {
+			s = s.split('//',1)[0]
+			if (s.substr(0,1) == '#') {
+				addLine(s.substr(1), '', true)
+			} else if (s.substr(0,1) == ':' && s.substr(0,7).includes('D') && s.substr(4,3).includes('D')) {
+				var arr = s.split(':')
+				if (arr[1].substr(-1) == 'C') {
+					cond = 'Conditional'
+				} else {
+					cond = 'Unconditional'
+				}
+				if (arr[1].includes('chain')) {
+					type = 'Chain'
+				} else if (arr[1].includes('rep')) {
+					type = 'Repeat'
+				} else if (arr[1].includes('imp')) {
+					type = 'Impulse'
+				}
+				s = arr.splice(2).join(':').split('`').join('').trim()
+				if (s.length > 1) {
+					add(type, s, cond, 'Always Active', true)
+				}
+			} else if (s.substr(0,2) == '>{') {
+				code = $.parseJSON(s.substr(1).split('&quot;').join('"'))
+				if (code.type == 'impulse') {type = 'Impulse'}
+				if (code.type == 'repeating') {type = 'Repeat'}
+				if (code.type == 'impulse-chain') {type = 'Impulse'}
+				if (code.type == 'repeating-chain') {type = 'Repeat'}
+				if (code.type == 'chain') {type = 'Chain'}
+				if (code.auto == false) {auto = 'Needs Redstone'}
+				if (code.auto == true) {auto = 'Always Active'}
+				if (code.conditional == false) {cond = 'Unconditional'}
+				if (code.conditional == true) {cond = 'Conditional'}
+				if (typeof code.executeAs == 'string') {executor = code.executeAs}
+			} else if (s != "") {
+				if (executor != '') {
+					s = '/execute '+executor+' ~ ~ ~ '+s
+				}
+				if ($('.cmd').length > 0) {
+					add(type, s, cond, auto, true)
+				} else {
+					add('Impulse', s, cond, 'Needs Redstone', true)
+				}
+			}
+		});
+	}
+	setLineWidth()
+	hideDialog();
+}
+function editLastCmd(command) {
+	$('#cmd'+($('.cmd').length-1)+' input').val(command)
+}
+function getCommands() {
+	saveCommands();
+	var parts = [];
+	$('.cmd').each(function(i) {
+		command = getCommand(i)
+		if (command != "") {
+			parts.push(command)
+		}
+	})
+	$('#pasteRawArea').val(parts.join('\n'))
+}
+function compileCode() {
+	var codeArray = [];
+	$('.cmd').each(function (i) {
+		type = getType(i, 1)
+		type += getCond(i, 1)
+		type += getAuto(i, 1)
+		command = $(this).find('input').val().trim()
+		codeArray.push(type+command);
+
+		if ($(this).find('.NBT').html().length > 0) {
+			var codeNBT = "";
+			if ($(this).find('.NBT #name').html() != undefined) {
+				codeNBT = '§n'+$(this).find('.NBT #name').html()
+			}
+			if ($(this).find('.NBT #statsType').html() != undefined) {
+				codeNBT += '§t'+$(this).find('.NBT #statsType').html()
+			}
+			if ($(this).find('.NBT #statsName').html() != undefined) {
+				codeNBT += '§s'+$(this).find('.NBT #statsName').html()
+			}
+			if ($(this).find('.NBT #statsObjective').html() != undefined) {
+				codeNBT += '§o'+$(this).find('.NBT #statsObjective').html()
+			}
+			codeArray.push('N'+codeNBT)
+		}
+	})
+	var code = codeArray.join('§§')
+	return code;
+}
+function parseCode(code) {
+	if (code.length > 2) {
+		code = shortFormat(code.split('+').join(' '), false)
+		var commands = code.split('§§')
+		i = -1;
+		$.each( commands, function (index, val) {
+			if (val.substr(0,1) == 'N') {
+				NBTindex = i;
+				$('#cmd'+NBTindex+' .NBT').html('')
+				$('#cmd'+NBTindex+' .block').removeClass('plusNBT')
+				var NBTArray = val.substr(1).split('§')
+				$.each(NBTArray, function(n, val) {
+					switch (val.substr(0,1)) {
+						case 'n':
+						appendNBT('name', val.substr(1))
+						break;
+						case 't':
+						appendNBT('statsType', val.substr(1))
+						break;
+						case 's':
+						appendNBT('statsName', val.substr(1))
+						break;
+						case 'o':
+						appendNBT('statsObjective', val.substr(1))
+						break;
+					}
+				})
+			} else {
+				i++;
+				switch (val.substr(0,1)) {
+					case 'i':
+					type = 'Impulse'
+					break;
+					case 'c':
+					type = 'Chain'
+					break;
+					case 'r':
+					type = 'Repeat'
+					break;
+				}
+				if (val.substr(1,1) == 'c') {
+					cond = 'Conditional';
+				} else {
+					cond = 'Unconditional'
+				}
+				if (val.substr(2,1) == 'n') {
+					auto = 'Needs Redstone';
+				} else {
+					auto = 'Always Active'
+				}
+				command = val.substr(3);
+				command = command.split('"').join('&quot;')
+				if (type != undefined && cond != undefined && auto != undefined) {
+					add(type, command, cond, auto, true);
+				}
+			}
+		})
+	}
+}
+function clearAll() {
+	index = 0;
+	$('#frame').html('')
+}
+function generateDiscord() {
+	openLine(0)
+	var Lines = [];
+	$('.lineTab').each(function (i) {
+		var line = i;
+		openLine(line);
+		var rows = [];
+		if ($('.lineTab').length > 1) {
+			rows.push(getLineName()+':')
+		}
+		$('.cmd').each(function (i) {
+			index = i;
+			rows.push(':' + getType(i,4) + 'D' + getCond(i, 3) + ':`/' + parseCommand(getCommand(i).trim()) + '`')
+		});
+		Lines.push(rows.join('\n'))
+	});
+	$('#exportArea').val(Lines.join('\n\n'))
+	$('#export h3').text('/r/MinecraftCommands Discord Code')
+}
+function generateSmelt() {
+	openLine(0)
+	var smeltLines = [];
+	$('.lineTab').each(function (i) {
+		var line = i;
+		openLine(line);
+		var rows = [];
+		var lastJson = new Object;
+		lastJson.conditional = false
+		rows.push('#'+getLineName())
+		$('.cmd').each(function (i) {
+			index = i;
+			var typeJson = new Object();
+			typeJson.type = getType(i, 3)
+			typeJson.conditional = getCond(i, 2)
+			typeJson.auto = getAuto(i, 3)
+			$.each(typeJson, function(n, val) {
+				if (lastJson[n] == typeJson[n]) {
+					delete typeJson[n]
+				}
+			})
+			if ($.isEmptyObject(typeJson) == false) {
+				rows.push('	>'+JSON.stringify(typeJson))
+			}
+			command = parseCommand(getCommand(i).trim())
+			rows.push('	/'+command)
+			lastJson.type = getType(i, 3)
+			lastJson.conditional = getCond(i, 2)
+			lastJson.auto = getAuto(i, 3)
+
+		});
+		smeltLines.push(rows.join('\n'))
+	});
+	$('#exportArea').val(smeltLines.join('\n\n'))
+	$('#export h3').text('Smelt Code')
+}
+function generateFunction() {
+	openLine(0)
+	var Lines = [];
+	$('.lineTab').each(function (line) {
+		openLine(line);
+		var rows = [];
+		if ($('.lineTab').length > 1) {
+			rows.push('#'+getLineName()+'.mcfunction')
+		}
+		$('.cmd').each(function (i) {
+			var string = '';
+			if (getCond(i, 2)) {
+				string += 'execute @s[score_success_min=1] ~ ~ ~ '
+			}
+			string += parseCommand(getCommand(i).trim())
+			rows.push(string)
+		});
+		Lines.push(rows.join('\n'))
+	});
+	$('#exportArea').val(Lines.join('\n\n'))
+	if ($('.lineTab').length > 1) {
+		$('#export h3').text('Functions')
+	} else {
+		$('#export h3').text('Function')
+	}
+}
+function runJS(jscode) {
+	try {
+		jscode = eval('(function() {'+jscode+'\n}())')
+		c('Successfully evaluated Javascript: '+jscode)
+	} catch (err) {
+		c('[Error in evaluated Javascript] ' + err)
+	}
+	if (jscode == undefined) {jscode = ''}
+	return jscode
+}
+
+//Multiline
+function addLine(name, code, instant) {
+	index = $('.lineTab').length;
+	if (index < 16) {
+		name = '#'+name.split(' ').join('')
+		$('#newline input').val('')
+		hideDialog()
+		var newLine = '<div id="line'+index+'" class="lineTab" onclick="openLine('+index+')" data-history=\'\'><div onclick="closeLine('+index+')" class="lineClose">X</div><div class="lineID">'+name+'</div></div>'
+		$('#linebar').append(newLine)
+		$('#line'+index).data("history", '["'+code+'"]')
+		if (instant != true) {
+			$('#line'+index).hide()
+			setLineWidth(false)
+			$('#line'+index).show(mt)
+		}
+		openLine(index)
+	}
+}
+function openLine(index) {
+	saveLine()
+	clearAll()
+	historyX = $.parseJSON($('#line'+index).data("history"))
+	code = historyX[historyX.length-1]
+	if (code == undefined) {
+		parseCode('iun')
+	} else {
+		parseCode(code)
+	}
+	$('.lineTab.open').removeClass('open')
+	$('#line'+index).addClass('open')
+	$('#title input').val(getLineName(index))
+	setLineArrows(index)
+}
+function saveLine() {
+	autoCompleteObjective()
+	autoCompleteTeam()
+	autoCompleteTag()
+	autoCompleteName()
+	code = shortFormat(compileCode(), true)
+	if ($('.lineTab.open').data("history") != undefined) {
+		var historyX = $.parseJSON($('.lineTab.open').data("history"))
+		if (historyX[historyX.length-1] != code && '' != code) {
+			historyX.push(code)
+			if (history.length > 20) {
+				historyX = historyX.splice(1)
+			}
+			$('.lineTab.open').data("history", JSON.stringify(historyX))
+		}
+	}
+}
+function closeLine(index) {
+	$('#line'+index).hide(mt)
+	setTimeout(function() {
+		saveCommands();
+		var wasOpen = $('#line'+index+'.open').length
+		$('#line'+index).remove()
+		$('.lineTab').each(function (i) {
+			start = parseInt($(this).attr('id').replace('line',''))
+			if (start != i) {
+				changeLineIndex(start, i)
+			}
+		})
+		setLineWidth()
+		if (wasOpen == 1) {
+			if (index > 0) {
+				openLine(index-1)
+			} else {
+				if ($('.lineTab').length == 0) {
+					addLine('new-line','iun')
+				} else {
+					openLine(0)
+				}
+			}
+		}
+	}, mt);
+}
+function switchLine(mode) {
+	if (mode == '+') {
+		openLine(parseInt(getLineID())+1)
+	} else {
+		openLine(parseInt(getLineID())-1)
+	}
+}
+function changeLineIndex(start, index) {
+	var obj;
+	if (isFinite(start)) {
+		obj = $('#line'+start)
+	} else {
+		obj = start;
+		start = parseInt($(obj).attr('id').replace('line',''))
+	}
+	if (index != start) {
+		$(obj).html($(obj).html().split('('+start+')').join('('+index+')'))
+		$(obj).attr('onclick','openLine('+index+')')
+		$(obj).attr('id','line'+index)
+	}
+}
+function changeLineName(name) {
+	name = name.split(' ').join('-').toLowerCase().match(/[a-z0-9-_]+/g)
+	if (name != null && name != '') {
+		if (name.length > 20) {
+			name = name.substr(0,20)
+		}
+		$('.lineTab.open .lineID').html('#'+name)
+		$('#title input').val(name)
+	} else {
+		$('.lineTab.open .lineID').html('#unnamed')
+		$('#title input').val('')
+	}
+}
+function getLineName(index) {
+	if (index == undefined) {
+		var title = $('.lineTab.open .lineID').html().substr(1)
+	} else {
+		var title = $('#line'+index+' div.lineID').html().substr(1)
+	}
+	return title;
+}
+function getLineID(name) {
+	if (name == undefined) {
+		return $('.lineTab.open').attr('id').substr(4)
+	} else {
+		try {
+			return $("div.lineID:contains('#"+name+"')").parent().attr('id').substr(4)
+		} catch(err) {
+		}
+	}
+}
+function setLineWidth(instant) {
+	var len = $('.lineTab').length
+	var max = $('#menubar').width()-$('#main-ul').width()-$('#add_line').width()-28
+	var width = max/len
+	if (width > 174) {
+		width = 174
+	} else {
+		width = width-4
+	}
+	if (instant != true) {
+		$('.lineTab').animate({
+			width: width
+		}, mt)
+	} else {
+		$('.lineTab').width(width)
+	}
+}
+function setLineArrows(index) {
+	if (index == undefined) {
+		index = getLineID();
+	}
+	$('.arrow').hide()
+	if (index > 0) {
+		$('#arrow_left').show()
+	}
+	if (index < $('.lineTab').length-1) {
+		$('#arrow_right').show()
+	}
+}
+function clearLines() {
+	$('#linebar').html('')
+	clearAll()
+	addLine('new-line','iun')
+}
+function duplicateLine() {
+	saveLine()
+	historyX = $.parseJSON($('#line'+getLineID()).data("history"))
+	code = historyX[historyX.length-1]
+	addLine(getLineName()+'-1', code, false)
+}
+function reorderLines() {
+	setTimeout(function() {
+		$('.lineTab').each(function (i, s) {
+			changeLineIndex(s, i)
+		})
+	}, 10)
+}
+
+//Link
+function generateLink(returnS) {
+	var lines = []
+	saveLine()
+	$('.lineTab').each(function (i) {
+		historyX = $.parseJSON($('#line'+i).data("history"))
+		code = historyX[historyX.length-1]
+		var name = getLineName(i)
+		lines.push('l_'+name+'§§'+code)
+	})
+	code = lines.join('§§')
+	code = shortFormat(code, true).split(' ').join('+')
+	if (returnS) {
+		return code;
+	}
+	parts = splitStringAfter(code, queryMax)
+	code = "";
+	$.each(parts, function(index, value) {
+		if (index == 0) {index = ''}
+		code += '&c' + index + '=' + value
+	})
+	$('#getCodeArea').val('https://JannisX11.github.io/clg/index.html?'+code.substr(1))
+	$('#getCodeArea').select()
+}
+function shortenLink() {
+	var url = $('#getCodeArea').val();
+    if (url != 'https://JannisX11.github.io/clg/index.html?c=' && url.substr(0,44) == 'https://JannisX11.github.io/clg/index.html?c' && url != '' && url.length < 2000) {
+	    gapi.client.setApiKey('AIzaSyCMH1vV5kFy6yNJ2_EujQTS51AM43aLvVM');
+	    gapi.client.load('urlshortener', 'v1', function() { 
+
+	        var request = gapi.client.urlshortener.url.insert({
+	            'resource': {
+	            'longUrl': url,
+	            }
+	        });
+	        request.execute(function(response) {
+
+	            if (response.id != null) {
+	                $('#getCodeArea').val(response.id)
+	            }
+	            else {
+	            	shortenError('Could not shorten Link')
+	            }
+	        });
+	    });
+	} else {
+		if (url.substr(0,15) != 'https://goo.gl/' && url.length < 2000) {
+            shortenError('Invalid Url')
+        } else if (url.length > 1999) {
+            shortenError('Url is '+(url.length-1999)+' characters too long')
+        }
+	}
+}
+function shortenError(msg) {
+	$('#shortenError').html(msg)
+	$('#shortenError').hide(0)
+	$('#shortenError').show(mt)
+	setTimeout(function () {
+		$('#shortenError').hide(mt)
+	}, 1000)
+}
+
+//One Command
+function escapeQuotes(string) {
+	return string.split('\\').join('\\\\').split('"').join('\\"')
+}
+function oneCommand() {
+	var totalCmds = 0;
+	minecarts = [];
+	damage = ocDirData;
+	nextCmd = 0;
+	var oc = "/summon "+fallingblockID+" ~ ~1 ~ {Block:clay,Time:1,Passengers:[{id:"+fallingblockID+",Block:redstone_block,Time:1,Passengers:[{id:"+fallingblockID+",Block:activator_rail,Time:1,Passengers:["
+	addMinecart("gamerule commandBlockOutput false")
+	var openID = getLineID()
+	$('.lineTab').each(function (line) {
+		openLine(line);
+		switch ($('#markersign').val()) {
+			case 'Back Sign':
+				addMinecart('setblock'+coords(-1,line)+' wall_sign '+ocDirOpposite+' 0 {Text1:"{\\\\\\"text\\\\\\":\\\\\\"\\\\\\"}",Text2:"{\\\\\\"text\\\\\\":\\\\\\"'+getLineName(line)+'\\\\\\"}",Text3:"{\\\\\\"text\\\\\\":\\\\\\"\\\\\\"}",Text4:"{\\\\\\"text\\\\\\":\\\\\\"\\\\\\"}"}')
+				break;
+			case 'Wall Sign':
+				addMinecart('setblock'+coords(-1,line, -2)+' wall_sign '+ocDirData+' 0 {Text1:"{\\\\\\"text\\\\\\":\\\\\\"\\\\\\"}",Text2:"{\\\\\\"text\\\\\\":\\\\\\"'+getLineName(line)+'\\\\\\"}",Text3:"{\\\\\\"text\\\\\\":\\\\\\"\\\\\\"}",Text4:"{\\\\\\"text\\\\\\":\\\\\\"\\\\\\"}"}')
+				break;
+			case 'Top Sign':
+				addMinecart('setblock'+coords(0,line,-2)+' standing_sign '+ocDirSign+' 0 {Text1:"{\\\\\\"text\\\\\\":\\\\\\"\\\\\\"}",Text2:"{\\\\\\"text\\\\\\":\\\\\\"'+getLineName(line)+'\\\\\\"}"},Text3:"{\\\\\\"text\\\\\\":\\\\\\"\\\\\\"}",Text4:"{\\\\\\"text\\\\\\":\\\\\\"\\\\\\"}"')
+				break;
+			case 'AEC':
+				addMinecart('summon '+aecID+coords(-1,line)+' {CustomName:'+getLineName(line)+',Duration:2147483647,CustomNameVisible:1,Tags:[clg]}')
+				break;
+			case 'Armorstand':
+				addMinecart('summon '+asID+coords(-1,line)+' {CustomName:'+getLineName(line)+',Marker:1,Invisible:1,NoGravity:1,CustomNameVisible:1,Tags:[clg]}')
+				break;
+		}
+		if ($('.cmd').length > 0) {
+			damage = ocDirData;
+			if ($('#trackoutput').is(':checked')) {
+				addMinecart("fill"+coords(0,line)+coords($('.cmd').length-1, line)+" chain_command_block "+damage+' replace {TrackOutput:0b,auto:1b}')
+			} else {
+				addMinecart("fill"+coords(0,line)+coords($('.cmd').length-1, line)+" chain_command_block "+damage)
+			}
+		}
+		$('.cmd').each(function (i) {
+			totalCmds++;
+			command = $(this).find('input').val().trim()
+			damage = ocDirData;
+			NBT = [];
+			NBT.push(getAuto(i, 2))
+			index = i;
+			command = parseCommand(command)
+			if (command.includes('//')) {
+				command = command.split('//', 1).join('')
+			}
+			command = '"'+escapeQuotes(command)+'"';
+
+			NBT.push('Command:'+command)
+			if ($(this).find('.NBT').html != undefined) {
+				if ($(this).find('.NBT #name').html() != undefined) {
+					NBT.push('CustomName:'+$(this).find('.NBT #name').html())
+				}
+				var statsType = $(this).find('.NBT #statsType').html()
+				if (statsType != "" && statsType != undefined) {
+					var commandStats = 'CommandStats:{'+statsType+'Name:'+$(this).find('.NBT #statsName').html()+','+statsType+'Objective:'+$(this).find('.NBT #statsObjective').html()+'}'
+					if (commandStats.includes('undefined') == false) {
+						NBT.push(commandStats)
+					}
+				}
+			}
+
+				//Blockdata
+			if (getType(i) == 'Chain' && getCond(i, 2) == false && nextCmd != 2) {
+				if (auto == 'auto:0,') {
+					addMinecart('blockdata'+coords(i, line)+' {'+NBT.join(',')+'}')
+				} else {
+					addMinecart('blockdata'+coords(i, line)+' {'+NBT.splice(1).join(',')+'}')
+				}
+			} else {
+				//setblock
+				type = getType(i, 2)
+				if (getCond(i, 2) == true) {
+					damage += 8;
+				}
+				if (nextCmd == 2) {
+					type = '';
+					NBT = NBT.splice(1);
+					nextCmd = 0;
+				}
+				if (type == '' && NBT[0] == 'auto:0') {NBT = NBT.splice(1);}
+				if (type == 'repeating_' && NBT[0] == 'auto:0') {NBT = NBT.splice(1);}
+				if ($('#trackoutput').is(':checked')) {
+					NBT.push('TrackOutput:0b')
+				}
+				addMinecart('setblock'+coords(i,line)+' '+type+'command_block '+damage+' 1 {'+NBT.join(',')+'}')
+			}
+			if (nextCmd == 1) {
+				nextCmd++;
+			}
+		});
+	});
+
+	if ($('#markersign').val() == 'Top Sign') {
+		addMinecart('setblock ~ ~1 ~ command_block 0 0 {auto:1,Command:"/fill ~ ~-2 ~ ~ ~ ~ air"}')
+	} else {
+		addMinecart('setblock ~ ~1 ~ command_block 0 0 {auto:1,Command:"/fill ~ ~-3 ~ ~ ~ ~ air"}')
+	}
+	if ($('#spigot').is(':checked')) {
+		addMinecart("minecraft:kill @e[type="+minecartID+",r=1]")
+	} else {
+		addMinecart("kill @e[type="+minecartID+",r=1]")
+	}
+
+	oc += minecarts.join(',');
+	oc += "]}]}]}"
+	var suffix = 's';
+	if (totalCmds == 1) {
+		suffix = '';
+	}
+	var percent = Math.round((oc.length/32500)*100);
+	$('#oneCommandArea').val(oc);
+	$('#oneCommandLog').html(totalCmds+' command'+suffix+' | '+oc.length+' characters ('+percent+'%)')
+	if (oc.length > 32500) {
+		$('#oneCommandLog').append('<span style="color:#ee1111;"> (Too many)</span>')
+	}
+	$('#oneCommandArea').select();
+	openLine(openID)
+}
+function addMinecart(cmd) {
+	minecarts.push('{id:'+minecartID+',Command:"'+escapeQuotes(cmd)+'"}')
+	//
+}
+function coords(cmd, line, y) {
+	var coords;
+	if (y == undefined) {
+		y = -3
+		if ($('#reverse').is(':checked')) {
+			line = line*(-1)
+		}
+	}
+	if (line == undefined) {line = ''}
+	if (y == 0) {y = '';}
+	switch (ocDirData) {
+		case 5:
+		coords = ' ~'+cmd+' ~'+y+' ~'+line*(-1);
+		break;
+		case 3:
+		coords = ' ~'+line+' ~'+y+' ~'+cmd;
+		break;
+		case 4:
+		coords = ' ~'+cmd*(-1)+' ~'+y+' ~'+line;
+		break;
+		case 2:
+		coords = ' ~'+line*(-1)+' ~'+y+' ~'+cmd*(-1);
+		break;
+	}
+	return coords.split('~0').join('~')
+}
+function parseCommand(command) {
+	command = removeSlash(command).trim()
+	var prefix = '';
+	if (command.substr(0,8) == 'execute ') {
+		prefix = command.split(' ').splice(0,5).join(' ')+' '
+		command = command.split(' ').splice(5).join(' ')
+		command = (parseCommand(command))
+	}
+	if (command != '') {
+		command = applyAliases(command)
+	}
+	if (command.substr(0,5) == 'wait ') {
+		
+		var parts = command.substr(5).split(' ')
+		var location;
+		if (parts.length > 2) {
+			location = getLineStartCoords(parts.splice(2).join(' '))
+		} else {
+			location = coords(1,0,0)
+		}
+		parts.forEach(function(s, i) {
+			if (s.substr(s.length-1) == 'm') {
+				parts[i] = parseInt(s.substr(0,s.length-1))*1200
+			} else if (s.substr(s.length-1) == 's') {
+				parts[i] = parseInt(s.substr(0,s.length-1))*20
+			} else if (s.substr(s.length-1) == 't') {
+				parts[i] = parseInt(s.substr(0,s.length-1))
+			} else {
+				parts[i] = parseInt(s)
+			}
+			if (isNaN(parts[i])) {
+				parts = parts.splice(i)
+			}
+		})
+		if (parts[1] > 1) {
+			command = 'summon '+aecID+location+' {Tags:[Delay],Age:-'+parts[0]+',Duration:'+(parts[1]-1)+'}';
+			nextCmd = 1;
+		} else {
+			command = 'summon '+aecID+location+' {Tags:[Delay],Age:-'+parts[0]+'}';
+			nextCmd = 1;
+		}
+	}
+	if (command.substr(0,5) == 'auto0' || command.substr(0,5) == 'auto1') {
+		var autoVal = command.substr(4,1)
+		command = 'blockdata'+getLineStartCoords(command.substr(6))+' {auto:'+autoVal+'}'
+	}
+	if (command == 'delete #this') {
+		command = 'fill'+coords(index*(-1), '', '')+coords('', '', '')+' air';
+	}
+	if (command == 'invert') {
+		command = 'testforblock' + coords(-1,'','') + ' chain_command_block -1 {SuccessCount:0}'
+	}
+	if (command.substr(0,6) == 'print ') {
+		var syntax = command.split('&;').join('&semi&').split('&:').join('&colon&').split(' ').splice(1)
+		parts = syntax.splice(1).join(' ').split(/;|:/)
+		if (parts.length > 1) {
+			command = 'tellraw '+syntax[0]+' ['
+			parts.forEach(function(s, i) {
+				if (s != '') {
+					s = s.split('&semi&').join(';').split('&colon&').join(':')
+					if (i%2 == 0) {
+						command += '{"color":"'+s;
+					} else {
+						if (s.substr(0,3) == '(s)') {
+							command += '","selector":"'+s.substr(3)+'"},';
+						} else if (s.substr(0,3) == '(t)') {
+							command += '","translate":"'+s.substr(3)+'"},';
+						} else {
+							command += '","text":"'+s+'"},';
+						}
+					}
+				}
+			})
+			if (command.substr(command.length-1) == ',') {
+				command = command.substr(0,(command.length-1))
+			} else {
+				command += '","text":""}'
+			}
+			command += ']'
+		}
+	}
+	return prefix+command;
+}
+function getLineStartCoords(s) {
+	if (s.substr(0,1) == '#') {
+		var line = 0;
+		if (s.substr(1) == 'this') {
+			line = 0;
+		} else {
+			line = getLineID(s.substr(1))-getLineID()
+		}
+		if (line != undefined && isNaN(line) == false) {
+			return coords(index*(-1), line, '')
+		} else {
+			return ' '+s;
+		}
+	} else  if (s.substr(0,1) == '.') {
+		var cmdRel = 0;
+		switch (s.substr(1,1)) {
+			case '+':
+			cmdRel = parseInt(s.substr(2))
+			break;
+			case '-':
+			cmdRel = parseInt(s.substr(2)*(-1))
+			break;
+			default:
+			cmdRel = parseInt(s.substr(1))-index-1;
+			break;
+		}
+		if (isNaN(cmdRel) == false) {
+			return coords(cmdRel, 0, 0)
+		}
+	} else  if (s.length > 1) {
+		return ' '+s;
+	} else {
+		return ' ~ ~ ~';
+	}
+}
+
+//Selector
+function hoverSelGen() {
+	if ($('.cmd .ui input:focus').length > 0) {
+		inputPos = null
+		inputItem = null
+		inputPos = $(':focus').getCursorPosition();
+		inputItem = $('.cmd .ui input:focus')
+	}
+}
+function openSelGen() {
+	autoCompleteTeam()
+	autoCompleteObjective()
+	autoCompleteTag()
+	autoCompleteName()
+	var teamnames = [];
+	$('#teamnames li').each(function() {
+		teamnames.push($(this).text())
+	})
+	var objectivenames = [];
+	$('#objectivenames li').each(function() {
+		objectivenames.push($(this).text())
+	})
+	var tagnames = [];
+	$('#tagnames li').each(function() {
+		tagnames.push($(this).text())
+	})
+	var namenames = [];
+	$('#namenames li').each(function() {
+		namenames.push($(this).text())
+	})
+	showDialog('selector');
+	$('#selector iframe').contents().find('body').css('background-color', 'transparent')
+	$('#selector iframe')[0].contentWindow.clgNames(teamnames, objectivenames, tagnames, namenames)
+	setTimeout(function() {
+		$('#selector iframe').contents().find('button#generate').focus()
+	}, 10)
+}
+function saveSelGen(selector) {
+	if (inputPos != null && inputItem != null) {
+		var a = $(inputItem).val()
+		var output = a.substr(0,inputPos)+selector+a.substr(inputPos)
+		$(inputItem).val(output)
+	}
+	$(inputItem).focus()
+	hideDialog()
+}
+
+//Presets
+function addPreset(arr) {
+	sliceEmptyLine()
+	switch (arr) {
+		case 'delay':
+			addLine('aec-delay', 'rua/§s;+§p;+tag+@e§(type=§aec;,tag=Delay§)+add+DelayEnd+§c(Age:-1§c)§§cua/§x;+@e§(type=§aec;,tag=DelayEnd§)§td;§bd;§td;§c(§a1;b§c)§§cua/§x;+@e§(type=§aec;,tag=DelayEnd§)§td;§bd;§td;§c(§a0;b§c)')
+			break;
+		case 'crafting':
+			addLine('ground-crafting', 'rua/§s;+§p;+tag+@e§(type=item§)+add+item1+§c(Item:§c(id:§mc;item,Count:1b§c),OnGround:1b§c)§§cua/§s;+§p;+tag+@e§(type=item§)+add+item2+§c(Item:§c(id:§mc;item2,Count:1b§c),OnGround:1b§c)§§cua/§x;+@e§(type=item,tag=item1§)§td;/§s;+§p;+tag+@e§(type=item,tag=item2,r=1,c=1§)+add+itemCrafted§§cua/§x;+@e§(type=item,tag=itemCrafted§)§td;/§pr;+cloud§td;0+0+0+0+30§§cua/§x;+@e§(type=item,tag=itemCrafted§)§td;/§sm;+item§td;§c(Item:§c(id:§mc;item3,Count:1b§c)§c)§§cua/§x;+@e§(type=item,tag=itemCrafted§)§td;/§k;+@e§(type=item,tag=item1,r=1§)§§cua/§k;+@e§(type=item,tag=itemCrafted§)')
+			break;
+		case 'scores':
+			addLine('scores', 'iua/§s;+objectives+add+objective1+dummy§§cua/§s;+objectives+add+objective2+dummy§§cua/§s;+teams+add+red§§cua/§s;+teams+add+blue§§cua/delete+#this')
+			break;
+		case 'init':
+			addLine('player-init', "rua/§tf;+@a§(tag=!init§)§§rca/tp+@a§(tag=!init§)+§(spawn-coords§)§§cua/§tr;+@a§(tag=!init§)+§(§c('§t;':'welcome','§c;':'green'§c)§)§§cua/give+@a§(tag=!init§)+item+1§§cua/§s;+teams+join+§(teamname§)+@a§(tag=!init§)§§cua/§s;+§p;+tag+@a§(tag=!init§)+add+init")
+			break;
+		case 'relog':
+			addLine('player-relog', "iua/§s;+objectives+add+relog+stat.leaveGame§§rua/§tf;+@a§(§s_;relog_min=1§)§§rca/§tr;+@a§(§s_;relog_min=1§)+§(§c('§t;':'welcome','§c;':'green'§c)§)§§cua/tp+@a§(§s_;relog_min=1§)+§(Spawn-Coords§)§§cua/§s;+§p;+§r;+@a§(§s_;relog_min=1§)+relog")
+			break;
+		case 'death':
+			addLine('player-death', "iua/§s;+objectives+add+death+deathCount§§rua/§tf;+@a§(§s_;death_min=1§)§§rca/§tr;+@a§(§s_;death_min=1§)+§(§c('§t;':'you died','§c;':'green'§c)§)§§cua/tp+@a§(§s_;death_min=1§)+§(Spawn-Coords§)§§cua/§s;+§p;+§r;+@a§(§s_;death_min=1§)+death")
+			break;
+		case 'testfor':
+			addLine('test-players', "iun/§bd;§td;§c(§a0;b§c)§§cua/§tf;+@a§(playing§)§§N§t§scn;§splaying§o§p;§§cua/§tf;+@a§(queue§)§§N§t§scn;§squeue§o§p;§§cua/§s;+§p;+test+playing+§p;+1+*§§cca/§tr;+@a§(queue§)+§(§c('§t;':'There+are+still+§p;+in+the+arena','§c;':'red'§c)§)§§cua/§s;+§p;+test+queue+§p;+0+1§§cca/§tr;+@a§(queue§)+§(§c('§t;':'Two+§p;+required+to+start+a+game','§c;':'red'§c)§)§§cua/§s;+§p;+test+queue+§p;+2+*§§cca/§s;+§p;+test+playing+§p;+0+0§§cca/§bd;+0+0+0+§c(§a1;b§c)")
+			break;
+		case 'countdown':
+			addLine('countdown', "iun/§bd;§td;§c(§a0;§c)§§cua/title+@a§(tag§)+times+2+15+2§§cua/title+@a§(tag§)+title+§c('§t;':'3','§c;':'gold'§c)§§cua/§ps;+entity.experience_orb.pickup+§ms;+@a§(tag§)§td;1000§§cua/wait+1s§§cua/title+@a§(tag§)+title+§c('§t;':'2','§c;':'gold'§c)§§cua/§ps;+entity.experience_orb.pickup+§ms;+@a§(tag§)§td;1000§§cua/wait+1s§§cua/title+@a§(tag§)+title+§c('§t;':'1','§c;':'gold'§c)§§cua/§ps;+entity.experience_orb.pickup+§ms;+@a§(tag§)§td;1000§§cua/wait+1s§§cua/title+@a§(tag§)+title+§c('§t;':'Go!','§c;':'gold'§c)§§cua/§ps;+entity.player.levelup+§ms;+@a§(tag§)§td;1000")
+			break;
+		case 'gamerules':
+			addLine('prepare-world', "iua/gamerule+logAdminCommands+false§§cua/gamerule+doWeatherCycle+false§§cua/gamerule+doDaylightCycle+false§§cua/time+set+6000§§cua/gamerule+spawnRadius+0§§cua/weather+clear§§cua/gamerule+doFireTick+false§§cua/gamerule+doMobSpawning+false§§cua/gamerule+maxEntityCramming+0§§cua/gamerule+mobGriefing+false§§cua/gamerule+spectatorsGenerateChunks+false")
+			break;
+	}
+}
+
+//REPLACE
+function replaceAll() {
+	savePoint();
+	var val1 = $('#replace1').val()
+	var val2 = $('#replace2').val()
+	//Range
+	if (val1 != "" && val2.substr(0,7) == '/range ') {
+		$('#replaceLog').html('Replaced '+countString()+' items.')
+		var stack = val2.substr(7).split(' ').join('').split(',')
+		val2 = parseFloat(stack[0])
+		var end = parseFloat(stack[1])
+		if (end*0 != 0) {end = 0;}
+		if (val2*0 != 0) {val2 = 0;}
+		var count = 0;
+		$('.cmd.active').each(function(i) {
+			if ($(this).find('input').val().includes(val1)) {
+				count++;
+			}
+		})
+		var step = (end-val2)/(count-1)
+		var rounded;
+		
+		$('.cmd.active').each(function(i) {
+			if ($(this).find('input').val().includes(val1)) {
+				$(this).find('input').val($(this).find('input').val().split(val1).join(Math.round(val2*10000000000)/10000000000))
+				val2 += step
+				saveCommands();	
+			}
+		})
+	//STACK
+	} else if (val1 != "" && val2.substr(0,7) == '/stack ') {
+		var stack = val2.substr(7).split(' ').join('').split(',')
+		val2 = parseFloat(stack[0])
+		var step = parseFloat(stack[1])
+		if (step*0 != 0) {step = 0;}
+		if (val2*0 != 0) {val2 = 0;}
+		var firstVal2 = val2;
+		
+		$('.cmd.active').each(function(i) {
+			current = $(this).find('input').val().split(val1).join(val2)
+			if (current != $(this).find('input').val()) {
+				$(this).find('input').val(current)
+				val2 += step
+				if ((i+1) % parseInt(stack[2]) == 0) {
+					val2 = firstVal2;
+				}
+				saveCommands();
+			}
+		})
+
+	//COORDS
+	} else if (val1 != "" && val2.substr(0,8) == '/coords ') {
+		var stack = val2.substr(8).split(' ').join(',').split(',')
+		var x1 = parseInt(stack[0])
+		var y1 = parseInt(stack[1])
+		var z1 = parseInt(stack[2])
+		var x2 = parseInt(stack[3])
+		var y2 = parseInt(stack[4])
+		var z2 = parseInt(stack[5])
+		if (x1 > x2) { [x1, x2] = [x2, x1] }
+		if (y1 > y2) { [y1, y2] = [y2, y1] }
+		if (z1 > z2) { [z1, z2] = [z2, z1] }
+
+		var x3 = 1, y3 = 1, z3 = 1;
+		if (stack.length > 6) {
+			var x3 = parseInt(stack[6])
+			var y3 = parseInt(stack[7])
+			var z3 = parseInt(stack[8])
+		}
+		var arrX = [x1]
+		while (x1 < x2) {
+			x1 += x3;
+			arrX.push(x1)
+		}
+		var arrY = [y1]
+		while (y1 < y2) {
+			y1 += y3;
+			arrY.push(y1)
+		}
+		var arrZ = [z1]
+		while (z1 < z2) {
+			z1 += z3;
+			arrZ.push(z1)
+		}
+		var arrA = []
+		arrX.forEach(function(x, i) {
+			arrY.forEach(function(y, i) {
+				arrZ.forEach(function(z, i) {
+					arrA.push(x+' '+y+' '+z)
+				})
+			})
+		})
+		$('.cmd.active').each(function(i) {
+			if (arrA[i] != undefined) {
+				current = $(this).find('input').val().split(val1).join(arrA[i])
+				$('#cmd'+i+' input').val(current)
+			}
+		})
+
+	} else if (val1 != "" && val2.substr(0,8) == '//runJS ') {
+		var code = val2.substr(8)
+		var values = runJS(code)
+		var match = 0;
+		$('.cmd.active').each(function(i) {
+			if (values[match] != undefined) {
+				current = $(this).find('input').val().split(val1).join(values[match])
+				if (current != $(this).find('input').val()) {
+					$(this).find('input').val(current)
+					match++;
+					saveCommands();
+				}
+			}
+		})
+
+	} else if (val1 != "" && val1 != val2) {
+		$('#replaceLog').html('Replaced '+countString()+' items.')
+		$('.cmd.active').each(function(i) {
+			current = $(this).find('input').val().split(val1).join(val2)
+			if (current != $(this).find('input').val()) {
+				$(this).find('input').val(current)
+				saveCommands();
+			}
+		})
+	}
+}
+function replaceNX(repl) {		//repl = boolean, REPLace or find
+	affCmd = affCmds[0]
+	count = 0;
+	var index = 0;
+	var val1 = $('#replace1').val();
+	var val2 = $('#replace2').val();
+	if (val1 != '' && val1 != val2) {
+		if (repl == true) {				//Replacing
+			savePoint();
+			current = $('#cmd' + affCmds[0] + ' input').val().split(val1).join(val2);
+			$('#cmd' + affCmds[0] + ' input').val(current)
+			$('.cmd.active').each(function(i) {
+				count += occurrences($(this).find('input').val(), val1);
+			})
+			$('#replaceLog').html(count +' matches')
+		}
+		if (affCmd != affCmds[affCmds.length-1]) { //Wenn nicht Ende
+			affCmds = affCmds.splice(1);
+			affCmd = affCmds[0]
+			highlightCommand(affCmd);
+		} else {
+			if (repl == true) {
+				$('#replaceLog').html('Reached end')
+				$('.cmd.active input').removeClass('highlight')
+			} else {
+				countString()
+			}
+		}
+		saveCommands();
+	}
+}
+function countString() {
+	var val1 = $('#replace1').val();
+	var count = 0;
+	var countThis = 0;
+	var found = false;
+	affCmds = [];
+	if ($('#replaceLog').html() == '') {
+		$('#replaceLog').show(mt)
+	}
+	$('.cmd input.highlight').removeClass("highlight")
+	if (val1 != "") {
+		$('.cmd').each(function(i) {
+			countThis = occurrences($(this).find('input').val(), val1);
+			if ($(this).hasClass('active') == false) {countThis = 0}
+			if (countThis > 0) {
+				affCmds.push(i);
+			}
+			count++;
+			if (countThis > 0 && found == false) {
+				found = true;
+				highlightCommand(i)
+			}
+			count = count-1;
+			count += countThis;
+		})
+		$('#replaceLog').html(count +' matches')
+		return count;
+	} else {
+		$('#replaceLog').html('')
+		return 'no'
+	}
+}
+function highlightCommand(index) {
+	$('.cmd input').removeClass("highlight")
+	$('#cmd'+index).find('input').addClass('highlight');
+	$(window).scrollTo($('#cmd'+index), {duration:mt, offset: -128});
+}
+
+//Aliases
+function addAlias(val1, val2) {
+	index = $('#alias_frame').length
+	if (val1 == undefined) {val1 = ''}
+	if (val2 == undefined) {val2 = ''}
+	var newAlias = '<div class="alias"><input type="text" class="val1" value="'+val1+'" spellcheck="false"><input type="text" class="val2" value="'+val2+'" spellcheck="false"><button class="closeAlias" type="button" onclick="closeAlias($(this))">X</button></div>'
+	$('#alias_frame').append(newAlias)
+}
+function closeAlias(obj) {
+	obj.parent().remove()
+}
+function saveAliases() {
+	$('.alias input').each(function() {
+		$(this).attr('value', $(this).val())
+	})
+}
+function applyAliases(command) {
+	$('.alias').each(function() {
+		if (command.split(' ')[0] == removeSlash($(this).find('input.val1').val()).split(' ')[0]) {
+			var alias = command.split(' ');
+			command = $(this).find('input.val2').first().val();
+			if (command.substr(0,7).toUpperCase() == '//RUNJS') {
+				command = runJS(command.substr(7))
+			}
+			command = command.split('$i').join(index+1);
+			var val1arr = $(this).find('input.val1').first().val().split(' ');
+			val1arr.forEach(function(s, i) {
+				if (s.substr(0,1) == '$') {
+					if (i+1 == val1arr.length) {
+						var value = alias.splice(i).join(' ')
+					} else {
+						var value = alias[i]
+					}
+					command = command.split(s).join(value)
+				}
+			})
+			return false;
+		}
+	})
+	return command;
+}
+function resetAlias() {
+	$('.alias').remove()
+	addAlias('/reset $n', 'scoreboard players set @a[score_$n_min=1] $n 0')
+	addAlias('/untag $n', 'scoreboard players tag @a[tag=$n] remove $n')
+	addAlias('/debug', "//runJS return 'tellraw @a {&quot;text&quot;:&quot;[CLG] Running line #'+getLineName()+'&quot;}'")
+}
+
+//Undo
+function savePoint() {
+	saveLine()
+}
+function undo() {
+	saveLine()
+	historyX = $.parseJSON($('.lineTab.open').data("history"))
+	if (historyX.length > 1) {
+		if (historyX[historyX.length-2] == historyX[historyX.length-1]) {
+			historyX.splice(historyX.length-1)
+		}
+		clearAll()
+		code = historyX[historyX.length-2]
+		parseCode(code)
+		historyX.splice(historyX.length-1)
+		$('.lineTab.open').data("history", JSON.stringify(historyX))
+	}
+}
+
+//SETTINGS
+function setColorScheme(value) {
+	var body = $('body')
+	if (value == undefined) {
+		value = $('#scheme').val()
+	} else {
+		$('#scheme').val(value.charAt(0).toUpperCase()+value.slice(1))
+	}
+	value = value.toLowerCase()
+	localStorage.setItem('scheme', value)
+	$('body').attr('id', value)
+}
+function compactUI() {
+	if ($('#compactUI').is(':checked')) {
+		$('body').addClass('compact')
+		localStorage.setItem('compactUI', 'true')
+	} else {
+		$('body').removeClass('compact')
+		localStorage.setItem('compactUI', 'false')
+	}
+}
+function x11() {
+	if ($('#x11').is(':checked')) {
+		$('body').addClass('x11')
+		localStorage.setItem('x11', 'true')
+	} else {
+		$('body').removeClass('x11')
+		localStorage.setItem('x11', 'false')
+	}
+}
+function monospace() {
+	if ($('#monospace').is(':checked')) {
+		$('body').addClass('monospace')
+		localStorage.setItem('monospace', 'true')
+	} else {
+		$('body').removeClass('monospace')
+		localStorage.setItem('monospace', 'false')
+	}
+}
+function noLabels() {
+	if ($('#noLabels').is(':checked')) {
+		$('body').addClass('noLabels')
+		localStorage.setItem('noLabels', 'true')
+	} else {
+		$('body').removeClass('noLabels')
+		localStorage.setItem('noLabels', 'false')
+	}
+}
+function spigot() {
+	if ($('#spigot').is(':checked')) {
+		localStorage.setItem('spigot', 'true')
+	} else {
+		localStorage.setItem('spigot', 'false')
+	}
+}
+function reverseOption() {
+	if ($('#reverse').is(':checked')) {
+		localStorage.setItem('reverse', 'true')
+	} else {
+		localStorage.setItem('reverse', 'false')
+	}
+}
+function trackoutput() {
+	if ($('#trackoutput').is(':checked')) {
+		localStorage.setItem('trackoutput', 'true')
+	} else {
+		localStorage.setItem('trackoutput', 'false')
+	}
+}
+function oldVersion() {
+	if ($('#oldVersion').is(':checked')) {
+		localStorage.setItem('oldVersion', 'true')
+			fallingblockID = 'FallingSand'
+			minecartID = 'MinecartCommandBlock'
+			aecID = 'AreaEffectCloud'
+			asID = 'ArmorStand'
+	} else {
+		localStorage.setItem('oldVersion', 'false')
+			fallingblockID = 'falling_block'
+			minecartID = 'commandblock_minecart'
+			aecID = 'area_effect_cloud'
+			asID = 'armor_stand'
+	}
+}
+function animationscale(value) {
+	switch (value) {
+		case null:
+		mt = 200;
+		value = 'x3'
+		break;
+		case 'None':
+		mt = 0;
+		break;
+		case 'x1':
+		mt = 60;
+		break;
+		case 'x2':
+		mt = 100;
+		break;
+		case 'x3':
+		mt = 200;
+		break;
+		default:
+		mt = 200;
+		break;
+	}
+	$('#animationscale').val(value)
+	localStorage.setItem('animationscale', value)
+}
+function ocDir(value) {
+	switch (value) {
+		case 'East':
+		ocDirData = 5;
+		ocDirOpposite = 4;
+		ocDirSign = 12;
+		break;
+		case 'South':
+		ocDirData = 3;
+		ocDirOpposite = 2;
+		ocDirSign = 0;
+		break;
+		case 'West':
+		ocDirData = 4;
+		ocDirOpposite = 5;
+		ocDirSign = 4;
+		break;
+		case 'North':
+		ocDirData = 2;
+		ocDirOpposite = 3;
+		ocDirSign = 8;
+		break;
+	}
+	$('#ocDir').val(value)
+	localStorage.setItem('ocDir', value)
+}
+function markersign(value) {
+	if (value == undefined) {
+		value = $('#markersign').val()
+	} else if (value == "") {
+		value = "None"
+	}
+	localStorage.setItem('markersign', value)
+	$('#markersign').val(value)
+}
+	</script>
+	<ul id="autoCompleteTop" class="hidden">
+		
+
+		<li><div>/setblock</div>
+			<ul>
+				<li><div class="wildcard">~</div>
+					<ul>
+						<li><div class="wildcard">#block</div>
+							<ul>
+								<li><div class="wildcard">#num</div>
+									<ul>
+										<li><div>destroy</div></li>
+										<li><div>keep</div></li>
+										<li><div>replace</div></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/stats</div>
+			<ul>
+				<li><div>entity</div>
+					<ul>
+						<li><div class="wildcard">@</div>
+							<ul>
+								<li><div>set</div>
+									<ul>
+										<li><div>AffectedEntities</div></li>
+										<li><div>AffectedBlocks</div></li>
+										<li><div>AffectedItems</div></li>
+										<li><div>QueryResult</div></li>
+										<li><div>SuccessCount</div></li>
+										<li><div class="wildcard">#</div>
+											<ul>
+												<li><div class="wildcard">@</div>
+													<ul>
+														<li><div class="wildcard">#obj</div></li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li><div>block</div>
+					<ul>
+						<li><div class="wildcard">~</div>
+							<ul>
+								<li><div>set</div>
+									<ul>
+										<li><div>AffectedEntities</div></li>
+										<li><div>AffectedBlocks</div></li>
+										<li><div>AffectedItems</div></li>
+										<li><div>QueryResult</div></li>
+										<li><div>SuccessCount</div></li>
+										<li><div class="wildcard">#</div>
+											<ul>
+												<li><div class="wildcard">@</div>
+													<ul>
+														<li><div class="wildcard">#obj</div></li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/testfor</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/testforblock</div>
+			<ul>
+				<li><div class="wildcard">~</div>
+					<ul>
+						<li><div class="wildcard">#block</div>
+							<ul>
+								<li><div class="wildcard">#num</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/testforblocks</div>
+			<ul>
+				<li><div class="wildcard">~</div>
+					<ul>
+						<li><div class="wildcard">~</div>
+							<ul>
+								<li><div class="wildcard">~</div>
+									<ul>
+										<li><div>masked</div>
+										</li>
+										<li><div>all</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/tellraw</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/clear</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/effect</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+					<ul>
+						<li><div></div>
+						</li>
+						<li><div>unluck</div>
+						</li>
+						<li><div>luck</div>
+						</li>
+						<li><div>levitation</div>
+						</li>
+						<li><div>glowing</div>
+						</li>
+						<li><div>saturation</div>
+						</li>
+						<li><div>absorption</div>
+						</li>
+						<li><div>health_boost</div>
+						</li>
+						<li><div>wither</div>
+						</li>
+						<li><div>poison</div>
+						</li>
+						<li><div>weakness</div>
+						</li>
+						<li><div>hunger</div>
+						</li>
+						<li><div>night_vision</div>
+						</li>
+						<li><div>blindness</div>
+						</li>
+						<li><div>invisibility</div>
+						</li>
+						<li><div>water_breating</div>
+						</li>
+						<li><div>fire_resistance</div>
+						</li>
+						<li><div>resistance</div>
+						</li>
+						<li><div>regeneration</div>
+						</li>
+						<li><div>nausea</div>
+						</li>
+						<li><div>jump_boost</div>
+						</li>
+						<li><div>instant_damage</div>
+						</li>
+						<li><div>instant_health</div>
+						</li>
+						<li><div>strength</div>
+						</li>
+						<li><div>mining_fatique</div>
+						</li>
+						<li><div>haste</div>
+						</li>
+						<li><div>slowness</div>
+						</li>
+						<li><div>speed</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/entitydata</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/gamerule</div>
+			<ul>
+				<li><div>commandBlockOutput</div></li>
+				<li><div>disableElytraMovementCheck</div></li>
+				<li><div>doDaylightCycle</div></li>
+				<li><div>doEntityDrops</div></li>
+				<li><div>doFireTick</div></li>
+				<li><div>doMobLoot</div></li>
+				<li><div>doMobSpawning</div></li>
+				<li><div>doTileDrops</div></li>
+				<li><div>doWeatherCycle</div></li>
+				<li><div>keepInventory</div></li>
+				<li><div>logAdminCommands</div></li>
+				<li><div>maxEntityCramming</div></li>
+				<li><div>mobGriefing</div></li>
+				<li><div>naturalRegeneration</div></li>
+				<li><div>randomTickSpeed</div></li>
+				<li><div>reducedDebugInfo</div></li>
+				<li><div>sendCommandFeedback</div></li>
+				<li><div>showDeathMessages</div></li>
+				<li><div>spawnRadius</div></li>
+				<li><div>spectatorsGenerateChunks</div></li>
+				<li><div class="wildcard">#</div>
+					<ul>
+						<li><div>true</div></li>
+						<li><div>false</div></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/gamemode</div>
+			<ul>
+				<li><div class="wildcard">#num</div>
+					<ul>
+						<li><div class="wildcard">@</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/replaceitem</div>
+			<ul>
+				<li><div>entity</div>
+					<ul>
+						<li><div class="wildcard">@</div>
+							<ul>
+								<li><div>slot.container.</div></li>
+								<li><div>slot.villager.</div></li>
+								<li><div>slot.horse.chest</div></li>
+								<li><div>slot.horse.</div></li>
+								<li><div>slot.horse.armor</div></li>
+								<li><div>slot.horse.saddle</div></li>
+								<li><div>slot.weapon.offhand</div></li>
+								<li><div>slot.weapon.mainhand</div></li>
+								<li><div>slot.weapon</div></li>
+								<li><div>slot.armor.feet</div></li>
+								<li><div>slot.armor.legs</div></li>
+								<li><div>slot.armor.chest</div></li>
+								<li><div>slot.armor.head</div></li>
+								<li><div>slot.enderchest.</div></li>
+								<li><div>slot.hotbar.</div></li>
+								<li><div>slot.inventory.</div></li>
+								<li><div>slot.</div></li>
+								<li><div class="wildcard">#</div>
+									<ul>
+										<li><div class="wildcard">#item</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li><div>block</div>
+					<ul>
+						<li><div class="wildcard">~</div>
+							<ul>
+								<li><div class="wildcard">#</div>
+									<ul>
+										<li><div class="wildcard">#item</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/give</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+					<ul>
+						<li><div class="wildcard">#item</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/kill</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/worldborder</div>
+			<ul>
+				<li><div>damage</div>
+					<ul>
+						<li><div>buffer</div>
+						</li>
+						<li><div>amount</div>
+						</li>
+					</ul>
+				</li>
+				<li><div>warning</div>
+					<ul>
+						<li><div>time</div>
+						</li>
+						<li><div>distance</div>
+						</li>
+					</ul>
+				</li>
+				<li><div>get</div>
+				</li>
+				<li><div>add</div>
+				</li>
+				<li><div>set</div>
+				</li>
+				<li><div>center</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/weather</div>
+			<ul>
+				<li><div>thunder</div>
+				</li>
+				<li><div>rain</div>
+				</li>
+				<li><div>clear</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/time</div>
+			<ul>
+				<li><div>query</div>
+					<ul>
+						<li><div>gametime</div>
+						</li>
+						<li><div>daytime</div>
+						</li>
+						<li><div>day</div>
+						</li>
+					</ul>
+				</li>
+				<li><div>add</div>
+				</li>
+				<li><div>set</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/summon</div>
+			<ul>
+				<li><div class="wildcard">#entity</div>
+					<ul>
+						<li><div class="wildcard">~</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/particle</div>
+			<ul>
+				<li><div>fallingdust</div></li>
+				<li><div>sweepAttack</div></li>
+				<li><div>damageIndicator</div></li>
+				<li><div>endRod</div></li>
+				<li><div>dragonbreath</div></li>
+				<li><div>mobappearance</div></li>
+				<li><div>take</div></li>
+				<li><div>droplet</div></li>
+				<li><div>blockdust</div></li>
+				<li><div>blockcrack</div></li>
+				<li><div>iconcrack</div></li>
+				<li><div>barrier</div></li>
+				<li><div>heart</div></li>
+				<li><div>slime</div></li>
+				<li><div>snowshovel</div></li>
+				<li><div>snowballpoof</div></li>
+				<li><div>reddust</div></li>
+				<li><div>cloud</div></li>
+				<li><div>footstep</div></li>
+				<li><div>lava</div></li>
+				<li><div>flame</div></li>
+				<li><div>enchantmenttable</div></li>
+				<li><div>portal</div></li>
+				<li><div>note</div></li>
+				<li><div>townaura</div></li>
+				<li><div>happyVillager</div></li>
+				<li><div>angryVillager</div></li>
+				<li><div>dripLava</div></li>
+				<li><div>dripWater</div></li>
+				<li><div>witchMagic</div></li>
+				<li><div>mobSpell</div></li>
+				<li><div>mobSpellAmbient</div></li>
+				<li><div>instantSpell</div></li>
+				<li><div>spell</div></li>
+				<li><div>largesmoke</div></li>
+				<li><div>smoke</div></li>
+				<li><div>magicCrit</div></li>
+				<li><div>crit</div></li>
+				<li><div>depthsuspend</div></li>
+				<li><div>suspended</div></li>
+				<li><div>wake</div></li>
+				<li><div>splash</div></li>
+				<li><div>bubble</div></li>
+				<li><div>fireworksSpark</div></li>
+				<li><div>hugeexplosion</div></li>
+				<li><div>largeexplode</div></li>
+				<li><div>explode</div></li>
+			</ul>
+		</li>
+		<li><div>/say</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/fill</div>
+			<ul>
+				<li><div class="wildcard">~</div>
+					<ul>
+						<li><div class="wildcard">~</div>
+							<ul>
+								<li><div class="wildcard">#block</div>
+									<ul>
+										<li><div class="wildcard">#num</div>
+											<ul>
+												<li><div>destroy</div></li>
+												<li><div>keep</div></li>
+												<li><div>replace</div>
+													<ul>
+														<li><div class="wildcard">#block</div>
+															<ul>
+																<li><div class="wildcard">#num</div></li>
+															</ul>
+														</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/clone</div>
+			<ul>
+				<li><div class="wildcard">~</div>
+					<ul>
+						<li><div class="wildcard">~</div>
+							<ul>
+								<li><div class="wildcard">~</div>
+									<ul>
+										<li><div>filtered</div>
+										</li>
+										<li><div>masked</div>
+											<ul>
+												<li><div>move</div>
+												</li>
+												<li><div>force</div>
+												</li>
+												<li><div>normal</div>
+												</li>
+											</ul>
+										</li>
+										<li><div>replace</div>#
+											<ul>
+												<li><div>move</div>
+												</li>
+												<li><div>force</div>
+												</li>
+												<li><div>normal</div>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/blockdata</div>
+			<ul>
+				<li><div class="wildcard">~</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/xp</div>
+			<ul>
+				<li><div class="wildcard">#b</div>
+					<ul>
+						<li><div class="wildcard">@</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/teleport</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+					<ul>
+						<li><div class="wildcard">~</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/tp</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+					<ul>
+						<li><div class="wildcard">~</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/title</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+					<ul>
+						<li><div>reset</div>
+						</li>
+						<li><div>clear</div>
+						</li>
+						<li><div>actionbar</div>
+						</li>
+						<li><div>subtitle</div>
+						</li>
+						<li><div>times</div>
+						</li>
+						<li><div>title</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/print</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/stopsound</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/spreadplayers</div>
+			<ul>
+				<li><div class="wildcard"></div>
+					<ul>
+						<li><div class="wildcard"></div>
+							<ul>
+								<li><div class="wildcard"></div>
+									<ul>
+										<li><div class="wildcard"></div>
+											<ul>
+												<li><div>true</div>
+												</li>
+												<li><div>false</div>
+												</li>
+												<li><div class="wildcard">#</div>
+													<ul>
+														<li><div class="wildcard">@</div></li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/spawnpoint</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+					<ul>
+						<li><div class="wildcard">~</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/reset</div>
+			<ul>
+				<li><div class="wildcard">#obj</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/untag</div>
+			<ul>
+				<li><div class="wildcard">#tag</div>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/playsound</div>
+			<ul>
+				<li><div class="wildcard"></div>
+					<ul>
+						<li><div>master</div></li>
+						<li><div>music</div></li>
+						<li><div>record</div></li>
+						<li><div>weather</div></li>
+						<li><div>block</div></li>
+						<li><div>hostile</div></li>
+						<li><div>neutral</div></li>
+						<li><div>player</div></li>
+						<li><div>ambient</div></li>
+						<li><div>voice</div></li>
+						<li><div class="wildcard">#</div>
+							<ul>
+								<li><div class="wildcard">@</div></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/execute</div>
+			<ul>
+				<li><div class="wildcard">@</div>
+					<ul>
+						<li><div class="wildcard">~</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><div>/scoreboard</div>
+			<ul>
+				<li><div>teams</div>
+					<ul>
+						<li><div>add</div>
+						</li>
+						<li><div>option</div>
+							<ul>
+								<li><div class="wildcard">#team</div>
+									<ul>
+										<li><div>collisionRule</div>
+											<ul>
+												<li><div>always</div></li>
+												<li><div>never</div></li>
+												<li><div>pushOtherTeams</div></li>
+												<li><div>pushOwnTeam</div></li>
+											</ul>
+										</li>
+										<li><div>color</div>
+											<ul>
+												<li><div>black</div></li>
+												<li><div>dark_blue</div></li>
+												<li><div>dark_green</div></li>
+												<li><div>dark_aqua</div></li>
+												<li><div>dark_red</div></li>
+												<li><div>dark_purple</div></li>
+												<li><div>gold</div></li>
+												<li><div>gray</div></li>
+												<li><div>dark_ray</div></li>
+												<li><div>blue</div></li>
+												<li><div>green</div></li>
+												<li><div>aqua</div></li>
+												<li><div>red</div></li>
+												<li><div>light_purple</div></li>
+												<li><div>yellow</div></li>
+												<li><div>white</div></li>
+											</ul>
+										</li>
+										<li><div>deathMessageVisibility</div>
+											<ul>
+												<li><div>always</div></li>
+												<li><div>hideForOtherTeams</div></li>
+												<li><div>hideForOwnTeam</div></li>
+												<li><div>never</div></li>
+											</ul>
+										</li>
+										<li><div>friendlyfire</div>
+											<ul>
+												<li><div>true</div></li>
+												<li><div>false</div></li>
+											</ul>
+										</li>
+										<li><div>nametagVisibility</div>
+											<ul>
+												<li><div>always</div></li>
+												<li><div>hideForOtherTeams</div></li>
+												<li><div>hideForOwnTeam</div></li>
+												<li><div>never</div></li>
+											</ul>
+										</li>
+										<li><div>seeFriendlyInvisibles</div>
+											<ul>
+												<li><div>true</div></li>
+												<li><div>false</div></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><div>join</div>
+							<ul>
+								<li><div class="wildcard">#team</div>
+								</li>
+							</ul>
+						</li>
+						<li><div>leave</div></li>
+						<li><div>empty</div>
+							<ul>
+								<li><div class="wildcard">#team</div>
+								</li>
+							</ul>
+						</li>
+						<li><div>remove</div>
+							<ul>
+								<li><div class="wildcard">#team</div>
+								</li>
+							</ul>
+						</li>
+						<li><div>list</div>
+							<ul>
+								<li><div class="wildcard">#team</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li><div>objectives</div>
+					<ul>
+						<li><div>add</div>
+							<ul>
+								<li><div class="wildcard"></div>
+									<ul>
+										<li><div>achievement.</div></li>
+										<li><div>stat.sneakTime</div></li>
+										<li><div>stat.leaveGame</div></li>
+										<li><div>stat.useItem.minecraft.</div></li>
+										<li><div>stat.craftItem.minecraft.</div></li>
+										<li><div>stat.playOneMinute</div></li>
+										<li><div>stat.</div></li>
+										<li><div>level</div></li>
+										<li><div>xp</div></li>
+										<li><div>food</div></li>
+										<li><div>health</div></li>
+										<li><div>teamkill.</div></li>
+										<li><div>killedByTeam.</div></li>
+										<li><div>deathCount</div></li>
+										<li><div>playerKillCount</div></li>
+										<li><div>totalKillCount</div></li>
+										<li><div>trigger</div></li>
+										<li><div>dummy</div></li>
+										<li><div class="wildcard"></div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><div>remove</div>
+								<ul>
+									<li><div class="wildcard">#obj</div>
+									</li>
+								</ul>
+							</li>
+						<li><div>setdisplay</div>
+							<ul>
+								<li><div>list</div></li>
+								<li><div>belowName</div></li>
+								<li><div>sidebar</div></li>
+								<li><div>sidebar.team.</div></li>
+								<li><div>sidebar.team.black</div></li>
+								<li><div>sidebar.team.dark_blue</div></li>
+								<li><div>sidebar.team.dark_green</div></li>
+								<li><div>sidebar.team.dark_aqua</div></li>
+								<li><div>sidebar.team.dark_red</div></li>
+								<li><div>sidebar.team.dark_purple</div></li>
+								<li><div>sidebar.team.gold</div></li>
+								<li><div>sidebar.team.gray</div></li>
+								<li><div>sidebar.team.dark_ray</div></li>
+								<li><div>sidebar.team.blue</div></li>
+								<li><div>sidebar.team.green</div></li>
+								<li><div>sidebar.team.aqua</div></li>
+								<li><div>sidebar.team.red</div></li>
+								<li><div>sidebar.team.light_purple</div></li>
+								<li><div>sidebar.team.yellow</div></li>
+								<li><div>sidebar.team.white</div></li>
+								<li><div class="wildcard">#</div>
+									<ul>
+										<li><div class="wildcard">#obj</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><div>list</div></li>
+					</ul>
+				</li>
+				<li><div>players</div>
+					<ul>
+						<li><div>test</div>
+							<ul>
+								<li><div class="wildcard">@</div>
+									<ul>
+										<li><div class="wildcard">#obj</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><div>list</div>
+							<ul>
+								<li><div class="wildcard">@</div>
+								</li>
+							</ul>
+						</li>
+						<li><div>reset</div>
+							<ul>
+								<li><div class="wildcard">@</div>
+									<ul>
+										<li><div class="wildcard">#obj</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><div>set</div>
+							<ul>
+								<li><div class="wildcard">@</div>
+									<ul>
+										<li><div class="wildcard">#obj</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><div>tag</div>
+							<ul>
+								<li><div class="wildcard">@</div>
+									<ul>
+										<li><div>add</div>
+											<ul>
+												<li><div class="wildcard">#tag</div></li>
+											</ul>
+										</li>
+										<li><div>remove</div>
+											<ul>
+												<li><div class="wildcard">#tag</div></li>
+											</ul>
+										</li>
+										<li><div>list</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><div>add</div>
+							<ul>
+								<li><div class="wildcard">@</div>
+									<ul>
+										<li><div class="wildcard">#obj</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><div>remove</div>
+							<ul>
+								<li><div class="wildcard">@</div>
+									<ul>
+										<li><div class="wildcard">#obj</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><div>enable</div>
+							<ul>
+								<li><div class="wildcard">@</div>
+									<ul>
+										<li><div class="wildcard">#obj</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><div>operation</div>
+							<ul>
+								<li><div class="wildcard">@</div>
+									<ul>
+										<li><div class="wildcard">#obj</div>
+											<ul>
+												<li><div>&gt;&lt;</div>
+												</li>
+												<li><div>&gt;</div>
+												</li>
+												<li><div>&lt;</div>
+												</li>
+												<li><div>%=</div>
+												</li>
+												<li><div>/=</div>
+												</li>
+												<li><div>*=</div>
+												</li>
+												<li><div>-=</div>
+												</li>
+												<li><div>+=</div>
+												</li>
+												<li><div>=</div>
+												</li>
+												<li><div class="wildcard">#</div>
+													<ul>
+														<li><div class="wildcard">@</div>
+															<ul>
+																<li><div class="wildcard">#obj</div>
+																</li>
+															</ul>
+														</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
+	<ul id="selectorarguments" class="hidden">
+		<li>tag=</li>
+		<li>team=</li>
+		<li>type=</li>
+		<li>name=</li>
+		<li>score_</li>
+		<li>r=</li>
+	</ul>
+	<ul id="itemids" class="hidden">
+		<li>iron_shovel</li>
+		<li>iron_pickaxe</li>
+		<li>iron_axe</li>
+		<li>flint_and_steel</li>
+		<li>apple</li>
+		<li>bow</li>
+		<li>arrow</li>
+		<li>coal</li>
+		<li>diamond</li>
+		<li>iron_ingot</li>
+		<li>gold_ingot</li>
+		<li>iron_sword</li>
+		<li>wooden_sword</li>
+		<li>wooden_shovel</li>
+		<li>wooden_pickaxe</li>
+		<li>wooden_axe</li>
+		<li>stone_sword</li>
+		<li>stone_shovel</li>
+		<li>stone_pickaxe</li>
+		<li>stone_axe</li>
+		<li>diamond_sword</li>
+		<li>diamond_shovel</li>
+		<li>diamond_pickaxe</li>
+		<li>diamond_axe</li>
+		<li>stick</li>
+		<li>bowl</li>
+		<li>mushroom_stew</li>
+		<li>golden_sword</li>
+		<li>golden_shovel</li>
+		<li>golden_pickaxe</li>
+		<li>golden_axe</li>
+		<li>string</li>
+		<li>feather</li>
+		<li>gunpowder</li>
+		<li>wooden_hoe</li>
+		<li>stone_hoe</li>
+		<li>iron_hoe</li>
+		<li>diamond_hoe</li>
+		<li>golden_hoe</li>
+		<li>wheat_seeds</li>
+		<li>wheat</li>
+		<li>bread</li>
+		<li>leather_helmet</li>
+		<li>leather_chestplate</li>
+		<li>leather_leggings</li>
+		<li>leather_boots</li>
+		<li>chainmail_helmet</li>
+		<li>chainmail_chestplate</li>
+		<li>chainmail_leggings</li>
+		<li>chainmail_boots</li>
+		<li>iron_helmet</li>
+		<li>iron_chestplate</li>
+		<li>iron_leggings</li>
+		<li>iron_boots</li>
+		<li>diamond_helmet</li>
+		<li>diamond_chestplate</li>
+		<li>diamond_leggings</li>
+		<li>diamond_boots</li>
+		<li>golden_helmet</li>
+		<li>golden_chestplate</li>
+		<li>golden_leggings</li>
+		<li>golden_boots</li>
+		<li>flint</li>
+		<li>porkchop</li>
+		<li>cooked_porkchop</li>
+		<li>painting</li>
+		<li>golden_apple</li>
+		<li>sign</li>
+		<li>wooden_door</li>
+		<li>bucket</li>
+		<li>water_bucket</li>
+		<li>lava_bucket</li>
+		<li>minecart</li>
+		<li>saddle</li>
+		<li>iron_door</li>
+		<li>redstone</li>
+		<li>snowball</li>
+		<li>boat</li>
+		<li>leather</li>
+		<li>milk_bucket</li>
+		<li>brick</li>
+		<li>clay_ball</li>
+		<li>reeds</li>
+		<li>paper</li>
+		<li>book</li>
+		<li>slime_ball</li>
+		<li>chest_minecart</li>
+		<li>furnace_minecart</li>
+		<li>egg</li>
+		<li>compass</li>
+		<li>fishing_rod</li>
+		<li>clock</li>
+		<li>glowstone_dust</li>
+		<li>fish</li>
+		<li>cooked_fish</li>
+		<li>dye</li>
+		<li>bone</li>
+		<li>sugar</li>
+		<li>cake</li>
+		<li>bed</li>
+		<li>repeater</li>
+		<li>cookie</li>
+		<li>filled_map</li>
+		<li>shears</li>
+		<li>melon</li>
+		<li>pumpkin_seeds</li>
+		<li>melon_seeds</li>
+		<li>beef</li>
+		<li>cooked_beef</li>
+		<li>chicken</li>
+		<li>cooked_chicken</li>
+		<li>rotten_flesh</li>
+		<li>ender_pearl</li>
+		<li>blaze_rod</li>
+		<li>ghast_tear</li>
+		<li>gold_nugget</li>
+		<li>nether_wart</li>
+		<li>potion</li>
+		<li>glass_bottle</li>
+		<li>spider_eye</li>
+		<li>fermented_spider_eye</li>
+		<li>blaze_powder</li>
+		<li>magma_cream</li>
+		<li>brewing_stand</li>
+		<li>cauldron</li>
+		<li>ender_eye</li>
+		<li>speckled_melon</li>
+		<li>spawn_egg</li>
+		<li>experience_bottle</li>
+		<li>fire_charge</li>
+		<li>writable_book</li>
+		<li>written_book</li>
+		<li>emerald</li>
+		<li>item_frame</li>
+		<li>flower_pot</li>
+		<li>carrot</li>
+		<li>potato</li>
+		<li>baked_potato</li>
+		<li>poisonous_potato</li>
+		<li>map</li>
+		<li>golden_carrot</li>
+		<li>skull</li>
+		<li>carrot_on_a_stick</li>
+		<li>nether_star</li>
+		<li>pumpkin_pie</li>
+		<li>fireworks</li>
+		<li>firework_charge</li>
+		<li>enchanted_book</li>
+		<li>comparator</li>
+		<li>netherbrick</li>
+		<li>quartz</li>
+		<li>tnt_minecart</li>
+		<li>hopper_minecart</li>
+		<li>prismarine_shard</li>
+		<li>prismarine_crystals</li>
+		<li>rabbit</li>
+		<li>cooked_rabbit</li>
+		<li>rabbit_stew</li>
+		<li>rabbit_foot</li>
+		<li>rabbit_hide</li>
+		<li>armor_stand</li>
+		<li>iron_horse_armor</li>
+		<li>golden_horse_armor</li>
+		<li>diamond_horse_armor</li>
+		<li>lead</li>
+		<li>name_tag</li>
+		<li>command_block_minecart</li>
+		<li>mutton</li>
+		<li>cooked_mutton</li>
+		<li>banner</li>
+		<li>end_crystal</li>
+		<li>spruce_door</li>
+		<li>birch_door</li>
+		<li>jungle_door</li>
+		<li>acacia_door</li>
+		<li>dark_oak_door</li>
+		<li>chorus_fruit</li>
+		<li>chorus_fruit_popped</li>
+		<li>beetroot</li>
+		<li>beetroot_seeds</li>
+		<li>beetroot_soup</li>
+		<li>dragon_breath</li>
+		<li>splash_potion</li>
+		<li>spectral_arrow</li>
+		<li>tipped_arrow</li>
+		<li>lingering_potion</li>
+		<li>shield</li>
+		<li>elytra</li>
+		<li>spruce_boat</li>
+		<li>birch_boat</li>
+		<li>jungle_boat</li>
+		<li>acacia_boat</li>
+		<li>dark_oak_boat</li>
+		<li>record_13</li>
+		<li>record_cat</li>
+		<li>record_blocks</li>
+		<li>record_chirp</li>
+		<li>record_far</li>
+		<li>record_mall</li>
+		<li>record_mellohi</li>
+		<li>record_stal</li>
+		<li>record_strad</li>
+		<li>record_ward</li>
+		<li>record_11</li>
+		<li>record_wait</li>
+	</ul>
+	<ul id="entitynames" class="hidden">
+		<li>xp_orb</li>
+		<li>area_effect_cloud</li>
+		<li>elder_guardian</li>
+		<li>wither_skeleton</li>
+		<li>stray</li>
+		<li>egg</li>
+		<li>leash_knot</li>
+		<li>painting</li>
+		<li>arrow</li>
+		<li>snowball</li>
+		<li>fireball</li>
+		<li>small_fireball</li>
+		<li>ender_pearl</li>
+		<li>eye_of_ender_signal</li>
+		<li>potion</li>
+		<li>xp_bottle</li>
+		<li>item_frame</li>
+		<li>wither_skull</li>
+		<li>tnt</li>
+		<li>falling_block</li>
+		<li>fireworks_rocket</li>mule
+		<li>husk</li>
+		<li>spectral_arrow</li>
+		<li>shulker_bullet</li>
+		<li>dragon_fireball</li>
+		<li>zombie_villager</li>
+		<li>skeleton_horse</li>
+		<li>zombie_horse</li>
+		<li>armor_stand</li>
+		<li>donkey</li>
+		<li>mule</li>
+		<li>commandblock_minecart</li>
+		<li>boat</li>
+		<li>minecart</li>
+		<li>chest_minecart</li>
+		<li>furnace_minecart</li>
+		<li>tnt_minecart</li>
+		<li>hopper_minecart</li>
+		<li>spawner_minecart</li>
+		<li>creeper</li>
+		<li>skeleton</li>
+		<li>spider</li>
+		<li>giant</li>
+		<li>zombie</li>
+		<li>slime</li>
+		<li>ghast</li>
+		<li>zombie_pigman</li>
+		<li>enderman</li>
+		<li>cave_spider</li>
+		<li>silverfish</li>
+		<li>blaze</li>
+		<li>magma_cube</li>
+		<li>ender_dragon</li>
+		<li>wither</li>
+		<li>bat</li>
+		<li>witch</li>
+		<li>endermite</li>
+		<li>guardian</li>
+		<li>shulker</li>
+		<li>pig</li>
+		<li>sheep</li>
+		<li>cow</li>
+		<li>chicken</li>
+		<li>squid</li>
+		<li>wolf</li>
+		<li>mooshroom</li>
+		<li>snowman</li>
+		<li>ocelot</li>
+		<li>villager_golem</li>
+		<li>horse</li>
+		<li>rabbit</li>
+		<li>polar_bear</li>
+		<li>villager</li>
+		<li>player</li>
+		<li>ender_crystal</li>
+	</ul>
+	<ul id="blockids" class="hidden">
+		<li>air</li>
+		<li>stone</li>
+		<li>grass</li>
+		<li>dirt</li>
+		<li>cobblestone</li>
+		<li>planks</li>
+		<li>sapling</li>
+		<li>bedrock</li>
+		<li>flowing_water</li>
+		<li>water</li>
+		<li>flowing_lava</li>
+		<li>lava</li>
+		<li>sand</li>
+		<li>gravel</li>
+		<li>gold_ore</li>
+		<li>iron_ore</li>
+		<li>coal_ore</li>
+		<li>log</li>
+		<li>log2</li>
+		<li>leaves</li>
+		<li>leaves2</li>
+		<li>sponge</li>
+		<li>glass</li>
+		<li>lapis_ore</li>
+		<li>lapis_block</li>
+		<li>dispenser</li>
+		<li>sandstone</li>
+		<li>noteblock</li>
+		<li>bed</li>
+		<li>golden_rail</li>
+		<li>detector_rail</li>
+		<li>sticky_piston</li>
+		<li>web</li>
+		<li>tallgrass</li>
+		<li>deadbush</li>
+		<li>piston</li>
+		<li>piston_head</li>
+		<li>wool</li>
+		<li>piston_extension</li>
+		<li>yellow_flower</li>
+		<li>red_flower</li>
+		<li>brown_mushroom</li>
+		<li>red_mushroom</li>
+		<li>gold_block</li>
+		<li>iron_block</li>
+		<li>double_stone_slab</li>
+		<li>stone_slab</li>
+		<li>brick_block</li>
+		<li>tnt</li>
+		<li>bookshelf</li>
+		<li>mossy_cobblestone</li>
+		<li>obsidian</li>
+		<li>torch</li>
+		<li>fire</li>
+		<li>mob_spawner</li>
+		<li>oak_stairs</li>
+		<li>chest</li>
+		<li>redstone_wire</li>
+		<li>diamond_ore</li>
+		<li>diamond_block</li>
+		<li>crafting_table</li>
+		<li>wheat</li>
+		<li>farmland</li>
+		<li>furnace</li>
+		<li>lit_furnace</li>
+		<li>standing_sign</li>
+		<li>wooden_door</li>
+		<li>spruce_door</li>
+		<li>birch_door</li>
+		<li>jungle_door</li>
+		<li>acacia_door</li>
+		<li>dark_oak_door</li>
+		<li>ladder</li>
+		<li>rail</li>
+		<li>stone_stairs</li>
+		<li>wall_sign</li>
+		<li>lever</li>
+		<li>stone_pressure_plate</li>
+		<li>iron_door</li>
+		<li>wooden_pressure_plate</li>
+		<li>redstone_ore</li>
+		<li>lit_redstone_ore</li>
+		<li>unlit_redstone_torch</li>
+		<li>redstone_torch</li>
+		<li>stone_button</li>
+		<li>snow_layer</li>
+		<li>ice</li>
+		<li>snow</li>
+		<li>cactus</li>
+		<li>clay</li>
+		<li>reeds</li>
+		<li>jukebox</li>
+		<li>fence</li>
+		<li>spruce_fence</li>
+		<li>birch_fence</li>
+		<li>jungle_fence</li>
+		<li>dark_oak_fence</li>
+		<li>acacia_fence</li>
+		<li>pumpkin</li>
+		<li>netherrack</li>
+		<li>soul_sand</li>
+		<li>glowstone</li>
+		<li>portal</li>
+		<li>lit_pumpkin</li>
+		<li>cake</li>
+		<li>unpowered_repeater</li>
+		<li>powered_repeater</li>
+		<li>trapdoor</li>
+		<li>monster_egg</li>
+		<li>stonebrick</li>
+		<li>brown_mushroom_block</li>
+		<li>red_mushroom_block</li>
+		<li>iron_bars</li>
+		<li>glass_pane</li>
+		<li>melon_block</li>
+		<li>pumpkin_stem</li>
+		<li>melon_stem</li>
+		<li>vine</li>
+		<li>fence_gate</li>
+		<li>spruce_fence_gate</li>
+		<li>birch_fence_gate</li>
+		<li>jungle_fence_gate</li>
+		<li>dark_oak_fence_gate</li>
+		<li>acacia_fence_gate</li>
+		<li>brick_stairs</li>
+		<li>stone_brick_stairs</li>
+		<li>mycelium</li>
+		<li>waterlily</li>
+		<li>nether_brick</li>
+		<li>nether_brick_fence</li>
+		<li>nether_brick_stairs</li>
+		<li>nether_wart</li>
+		<li>enchanting_table</li>
+		<li>brewing_stand</li>
+		<li>cauldron</li>
+		<li>end_portal</li>
+		<li>end_portal_frame</li>
+		<li>end_stone</li>
+		<li>dragon_egg</li>
+		<li>redstone_lamp</li>
+		<li>lit_redstone_lamp</li>
+		<li>double_wooden_slab</li>
+		<li>wooden_slab</li>
+		<li>cocoa</li>
+		<li>sandstone_stairs</li>
+		<li>emerald_ore</li>
+		<li>ender_chest</li>
+		<li>tripwire_hook</li>
+		<li>tripwire</li>
+		<li>emerald_block</li>
+		<li>spruce_stairs</li>
+		<li>birch_stairs</li>
+		<li>jungle_stairs</li>
+		<li>command_block</li>
+		<li>beacon</li>
+		<li>cobblestone_wall</li>
+		<li>flower_pot</li>
+		<li>carrots</li>
+		<li>potatoes</li>
+		<li>wooden_button</li>
+		<li>skull</li>
+		<li>anvil</li>
+		<li>trapped_chest</li>
+		<li>light_weighted_pressure_plate</li>
+		<li>heavy_weighted_pressure_plate</li>
+		<li>unpowered_comparator</li>
+		<li>powered_comparator</li>
+		<li>daylight_detector</li>
+		<li>daylight_detector_inverted</li>
+		<li>redstone_block</li>
+		<li>quartz_ore</li>
+		<li>hopper</li>
+		<li>quartz_block</li>
+		<li>quartz_stairs</li>
+		<li>activator_rail</li>
+		<li>dropper</li>
+		<li>stained_hardened_clay</li>
+		<li>barrier</li>
+		<li>iron_trapdoor</li>
+		<li>hay_block</li>
+		<li>carpet</li>
+		<li>hardened_clay</li>
+		<li>coal_block</li>
+		<li>packed_ice</li>
+		<li>acacia_stairs</li>
+		<li>dark_oak_stairs</li>
+		<li>slime</li>
+		<li>double_plant</li>
+		<li>stained_glass</li>
+		<li>stained_glass_pane</li>
+		<li>prismarine</li>
+		<li>sea_lantern</li>
+		<li>standing_banner</li>
+		<li>wall_banner</li>
+		<li>red_sandstone</li>
+		<li>red_sandstone_stairs</li>
+		<li>double_stone_slab2</li>
+		<li>stone_slab2</li>
+		<li>end_rod</li>
+		<li>chorus_plant</li>
+		<li>chorus_flower</li>
+		<li>purpur_block</li>
+		<li>purpur_pillar</li>
+		<li>purpur_stairs</li>
+		<li>purpur_double_slab</li>
+		<li>purpur_slab</li>
+		<li>end_bricks</li>
+		<li>beetroots</li>
+		<li>grass_path</li>
+		<li>end_gateway</li>
+		<li>repeating_command_block</li>
+		<li>chain_command_block</li>
+		<li>frosted_ice</li>
+		<li>magma</li>
+		<li>nether_wart_block</li>
+		<li>red_nether_brick</li>
+		<li>bone_block</li>
+		<li>structure_void</li>
+		<li>structure_block</li>
+	</ul>
+	<ul id="objectivenames" class="hidden">
+	</ul>
+	<ul id="teamnames" class="hidden">
+	</ul>
+	<ul id="tagnames" class="hidden">
+	</ul>
+	<ul id="namenames" class="hidden">
+	</ul>
+</head>
+<body id="Dark">
+<div id="blackout" class="hidden" style="display: none;" onclick="hideDialog()"></div>
+
+<div class="dialog wide" id="pasteRaw">
+	<h3>Paste Commands, Smelt Code or Link</h3>
+	<textarea spellcheck="false" id="pasteRawArea"></textarea>
+	<button type="button" onClick="addCommands()">To Current Project</button>
+	<button type="button" onClick="importProject()">To New Project</button>
+</div>
+
+<div class="dialog wide" id="export">
+	<h3></h3>
+	<textarea spellcheck="false" id="exportArea"></textarea>
+</div>
+
+<div class="dialog" id="replace">
+	<div class="row">
+		<span>Find:</span>
+		<input type="text" id="replace1" class="optionin" oninput="countString()" spellcheck="false"></input>
+	</div>
+	<div class="row">
+		<span>Replace:</span>
+		<input type="text" id="replace2" class="optionin" spellcheck="false"></input>
+	</div>
+	<output id="replaceLog"></output>
+	<div class="row">
+		<button type="button" onClick="hideDialog();$('.cmd input').removeClass('highlight')" style="width:50;">Close</button>
+		<button type="button" onClick="replaceNX(false)">Find Next</button>
+		<button type="button" onClick="replaceNX(true)">Replace</button>
+		<button type="button" class="first" onClick="replaceAll()">Replace All</button>
+	</div>
+</div>
+
+<div class="dialog" id="getCode">
+	<h3>Link</h3>
+	<input type="text" spellcheck="false" id="getCodeArea" onclick="select(this)"></input>
+	<button type="button" onClick="shortenLink()" class="inline-button">Shorten</button>
+	<output id="shortenError"></output>
+</div>
+
+<div class="dialog" id="onecommand">
+	<h3>Command</h3>
+	<textarea spellcheck="false" id="oneCommandArea" onclick="select(this)"></textarea>
+	<output id="oneCommandLog"></output>
+</div>
+
+<div class="dialog" id="settings">
+	<h3>Settings</h3>
+
+	<h5>Layout</h5>
+	<div class="row">
+		<label for="scheme" class="optionleft">Color Scheme</label>
+		<select id="scheme" class="optionin" onchange="setColorScheme()">
+			<option selected="true">Dark</option>
+			<option>Gray</option>
+			<option>Light</option>
+		</select>
+	</div>
+	<div class="row">
+		<label for="compactUI" class="optionleft">Compact UI</label>
+		<input type="checkbox" class="optionin" id="compactUI" onclick="compactUI()">
+	</div>
+	<div class="row">
+		<label for="x11" class="optionleft">X11Pack Textures</label>
+		<input type="checkbox" class="optionin" id="x11" onclick="x11()">
+	</div>
+	<div class="row">
+		<label for="noLabels" class="optionleft">Monospace Font</label>
+		<input type="checkbox" class="optionin" id="monospace" onclick="monospace()">
+	</div>
+	<div class="row">
+		<label for="noLabels" class="optionleft">Hide Command Labels</label>
+		<input type="checkbox" class="optionin" id="noLabels" onclick="noLabels()">
+	</div>
+
+	<div class="row">
+		<span class="optionleft">Animation Scale</span>
+		<select id="animationscale" class="optionin" onchange="animationscale($('#animationscale').val())">
+			<option>None</option>
+			<option>x1</option>
+			<option>x2</option>
+			<option>x3</option>
+		</select>
+	</div>
+
+	<h5>One Command</h5>
+	<div class="row">
+		<label for="oldVersion" class="optionleft">Use Old Entity Names</label>
+		<input type="checkbox" class="optionin" id="oldVersion" onclick="oldVersion()">
+	</div>
+	<div class="row">
+		<label for="spigot" class="optionleft">Essentials support</label>
+		<input type="checkbox" class="optionin" id="spigot" onclick="spigot()">
+	</div>
+	<div class="row">
+		<label for="reverse" class="optionleft">Reverse Line Order</label>
+		<input type="checkbox" class="optionin" id="reverse" onclick="reverseOption()">
+	</div>
+	<div class="row">
+		<label for="trackoutput" class="optionleft">Disable Track Output</label>
+		<input type="checkbox" class="optionin" id="trackoutput" onclick="trackoutput()">
+	</div>
+	<div class="row">
+		<label for="markersign" class="optionleft">Spawn Line Markers</label>
+		<select id="markersign" class="optionin" onchange="markersign()">
+			<option selected="selected">None</option>
+			<option>Top Sign</option>
+			<option>Back Sign</option>
+			<option>Wall Sign</option>
+			<option>AEC</option>
+			<option>Armorstand</option>
+		</select>
+	</div>
+	<div class="row">
+		<span class="optionleft">Spawn Direction</span>
+		<select id="ocDir" class="optionin" onchange="ocDir($('#ocDir').val())">
+			<option selected="selected">East</option>
+			<option>South</option>
+			<option>West</option>
+			<option>North</option>
+		</select>
+	</div>
+
+
+	<div class="setting">
+		<button type="button" class="optionin" onClick="hideDialog()">Done</button>
+	</div>
+</div>
+
+<div class="dialog" id="aliases">
+	<h3>Command Aliases</h3>
+	<div id="alias_frame"></div>
+	<div id="alias_notes">$i = Returns the command block number</div>
+	<button type="button" onclick="hideDialog();">Close</button>
+	<button type="button" onclick="resetAlias();">Set Default</button>
+	<button type="button" onclick="addAlias();">Add</button>
+</div>
+
+<div class="dialog" id="projects">
+	<h3>Project Manager</h3>
+	<div id="project_frame"></div>
+	<button type="button" onclick="hideDialog();">Close</button>
+	<button type="button" onclick="addProject('l_new§l;§§iun', 'New Project', 0, 0, false);selectProjectName('last')">New Project</button>
+</div>
+
+<div class="dialog" id="confirm">
+	<h3></h3>
+	<button type="button" id="confirmBtn" onclick="">Confirm</button>
+	<button type="button" onclick="showDialog('projects');">Cancel</button>
+</div>
+
+<div class="dialog" id="help">
+	<h3>Documentation</h3>
+	<h5>General Functions</h5>
+	<p><b>Target Selector</b> - A target selector will generate relative coordinates leading to a command block in the same project. Examples: Use #this to target the first block of the current line. Use #loop to target the line #loop. Use .5 to target the 5th command of the current chain. Target selectors can be used with the auto and wait command.</p>
+	<p><b>Alias</b> - An alias is a simple way to write less text for commands, that occur often but with similar syntax. Aliases can be used with arguments that are stated in the command with a dollar sign followed by any character. $i returns the command block number. With //runJS you can just write a javascript function that returns a string.</p>
+	
+	<h5>Command Aliases</h5>
+	<p>The One Command Compiler supports a few custom commands that make specific things easier. You can add more of these in Settings>Aliases</p>
+	<p><b>/untag &lt;tag&gt;</b> - Removes the tag from all players that have it</p>
+	<p><b>/reset &lt;objective&gt;</b> - Resets the score for all players that have a minimum of 1</p>
+	<p><b>/wait &lt;time[t/s]&gt; [iterations[t/s]] [target]</b> - Waits for n ticks/seconds before continuing the chain. Will activate a target instead when specified. Requires <a class="link" onclick="addPreset('delay')">AEC timer module</a></p>
+	<p><b>/delete #this</b> - Placed on the end of a line, it will remove the current chain after activation</p>
+	<p><b>/auto&lt;0/1&gt; &lt;line-name&gt;</b> - Activates/Deactivates that chain. Also works with coordinates</p>
+	<p><b>/invert</b> - Inverts condition from previous command block</p>
+	<p><b>/print &lt;player&gt; &lt;color&gt;:&lt;message&gt;</b> - Short form for /tellraw. Use color and text alternating, seperated by : and ; Use prefix (s) to indicate a selector</p>
+	<h5>Replace Syntax</h5>
+	<p>Put these in the "Replace" field in the find/replace dialog, it will replace the thing with generated numbers, one iteration per command
+	<p><b>/stack &lt;start&gt;,&lt;step&gt;</b> - Replaces value with numbers, starting from &lt;start&gt;, increasing with each command by &lt;step&gt;</p>
+	<p><b>/range &lt;start&gt;,&lt;end&gt;</b> - Replaces value with numbers, beginning with &lt;start&gt;, ending with &lt;end&gt;</p>
+	<p><b>/coords &lt;x1&gt; &lt;y1&gt; &lt;z1&gt; &lt;x2&gt; &lt;y2&gt; &lt;z2&gt; [&lt;x3&gt; &lt;y3&gt; &lt;z3&gt;]</b> - Replaces value with every coordinate between point 1 and point 2. (Use point 3 do define spacing of coordinates, defaults to 1)</p>
+	<h5>Keys</h5>
+	<p><b>TAB</b> - Auto-complete command</p>
+	<p><b>Ctrl + P</b> - Parse current command (Apply aliases)</p>
+	<p><b>Ctrl + Delete</b> - Removes current command</p>
+	<p><b>Ctrl + D</b> - Duplicates current command</p>
+	<p><b>Ctrl + Shift + D</b> - Duplicates all selected command</p>
+	<p><b>Ctrl + A</b> - Selects current command</p>
+	<p><b>Return</b> - Goto next command</p>
+	<p><b>Shift + Return</b> - Insert empty command block</p>
+	<p><b>Shift + Up/Down</b> - Move command block</p>
+	<p><b>Shift + Leftclick on command block</b> - Locks/unlocks command block</p>
+	<p><b>Ctrl + Numpad 1</b> - Toggle current command block type</p>
+	<p><b>Ctrl + Numpad 2</b> - Toggle current conditional mode</p>
+	<p><b>Ctrl + Numpad 3</b> - Toggle current activation mode</p>
+	<button type="button" onclick="hideDialog();">Close</button>
+</div>
+
+<div class="dialog" id="NBT">
+	<h3>Command Block NBT</h3>
+	<div class="row">
+		<span class="optionleft">Custom Name:</span>
+		<input type="text" class="optionin" id="blockName" spellcheck="false"></input>
+	</div>
+	<div class="row">
+		<span>Stats Type:</span>
+		<select id="statsType" class="optionin" id="statsType" onchange="">
+			<option selected="selected"></option>
+			<option>AffectedEntities</option>
+			<option>AffectedBlocks</option>
+			<option>AffectedItems</option>
+			<option>QueryResult</option>
+			<option>SuccessCount</option>
+		</select>
+	</div>
+	<div class="row">
+		<span class="optionleft">Name:</span>
+		<input type="text" class="optionin" id="statsName" spellcheck="false"></input>
+	</div>
+	<div class="row">
+		<span class="optionleft">Objective:</span>
+		<input type="text" class="optionin" id="statsObjective" spellcheck="false"></input>
+	</div>
+	<div class="row">
+		<button type="button" onclick="hideDialog()">Cancel</button>
+		<button type="button" onclick="addNBT()">Save</button>
+	</div>
+</div>
+
+<div class="dialog" id="presets">
+	<h3>Load a Preset</h3>
+	<div class="broad_button" onclick="addPreset('delay')">AEC Delay Base Module<div class="grayed">Can be used with the /wait command</div></div>
+	<div class="broad_button" onclick="addPreset('crafting')">Ground Crafting<div class="grayed">Simple ground Crafting Preset</div></div>
+	<div class="broad_button" onclick="addPreset('scores')">Initial Commands<div class="grayed">Creates scoreboards etc. when installing</div></div>
+	<div class="broad_button" onclick="addPreset('init')">Player Init<div class="grayed">Handles players who join for the first time</div></div>
+	<div class="broad_button" onclick="addPreset('relog')">Player Relog<div class="grayed">Handles players who join after the first time</div></div>
+	<div class="broad_button" onclick="addPreset('death')">Player Death<div class="grayed">Handles dying players</div></div>
+	<div class="broad_button" onclick="addPreset('gamerules')">Prepare World<div class="grayed">Prepares a new world (Gamerules etc.)</div></div>
+	<div class="broad_button" onclick="addPreset('testfor')">Test Before Game Start<div class="grayed">Test if arena is empty etc.</div></div>
+	<div class="broad_button" onclick="addPreset('countdown')">Countdown (3-0)<div class="grayed">Creates a simple countdown with sounds</div></div>
+	<div>Area Effect Cloud Duration : <input type="text" class="seamless" value="2147483647" onclick="document.execCommand('SelectAll');document.execCommand('copy');" readonly></div>
+	<div>Item Pickup Delay : <input type="text" class="seamless" value="32767" onclick="document.execCommand('SelectAll');document.execCommand('copy');" readonly></div>
+</div>
+
+<div class="dialog" id="selector">
+	<iframe allowtransparency="true" src="https://JannisX11.github.io/selector"></iframe>
+</div>
+
+<div class="bar" id="menubar">
+	<ul id="main-ul">
+		<li id="export_button">Export
+		<ul>
+			<li onclick="showDialog('getCode');generateLink();">Share</li>
+			<li onclick="showDialog('onecommand');oneCommand();">One Command</li>
+			<li onclick="showDialog('export');generateSmelt();">Smelt</li>
+			<li onclick="showDialog('export');generateFunction();">Function</li>
+			<li onclick="showDialog('export');generateDiscord();">Discord Emoji</li>
+		</ul></li>
+		<li>Edit
+		<ul>
+			<li onclick="undo()">Undo</li>
+			<li onclick="saveAsProject()">Save</li>
+			<li onclick="showDialog('pasteRaw')">Import</li>
+			<li onclick="duplicateLine()">Duplicate Line</li>
+			<li onclick="lockAll(false)">Unlock All</li>
+			<li onclick="lockAll(true)">Lock All</li>
+			<li onclick="showDialog('replace', false)">Find/Replace</li>
+			<li onclick="removeSelected()">Remove Selected</li>
+			<li onmouseenter="hoverSelGen();" onclick="openSelGen()">Import Selector</li>
+		</ul></li>
+		<li>Project
+		<ul>
+			<li onclick="showDialog('projects', true, true);saveAsProject(true)">Project Manager</li>
+			<li onclick="showDialog('aliases')">Aliases</li>
+			<li onclick="showDialog('presets')">Load Preset</li>
+			<li onclick="showDialog('help')">Help</li>
+			<li onclick="showDialog('settings')">Settings</li>
+		</ul></li>
+	</ul>
+	<div id="linebar"></div><div id="add_line" onclick="addLine('new-line','iun')">+</div>
+</div>
+
+<div class="bar" id="noJS"><span>Please enable Javascript</span></div>
+
+<div class="arrow btn" id="arrow_left" onclick="switchLine('-')">&lt;</div>
+<div class="arrow btn" id="arrow_right" onclick="switchLine('+')">&gt;</div>
+
+<div id="window">
+	<div id="title"><div id="project_title" ondblclick="showDialog('projects', true, true);saveAsProject(true)"></div><div>#</div><input type="text" value="" id="header_input" spellcheck="false" maxlength="20" oninput="changeLineName($(this).val())" onfocusout="$(this).val(getLineName())"></input></div>
+	<div style="clear: both;"></div>
+	<div id="frame" class="inwindow"></div>
+	<script>
+	$('#frame').sortable({
+		scroll: false,
+		start: function(event, ui) {saveCommands()},
+		stop: function(event, ui) {reorder()}
+	})
+	$('#linebar').sortable({
+		axis: "x",
+		stop: function(event, ui) {reorderLines()}
+	})
+	</script>
+	<button type="button" class="add_cmd_button" onclick="add('Impulse')">Add Impulse</button>
+	<button type="button" class="add_cmd_button" onclick="add('Chain')">Add Chain</button>
+	<button type="button" class="add_cmd_button" onclick="add('Repeat')">Add Repeating</button>
+	<div id="credit">Made by <a target="_blank" href="http://twitter.com/JannisX11">JannisX11</a> / Hosted by <a target="_blank" href="https://blockbench.net">Blockbench</a></div>
+</div>
+<datalist id="shorts">
+	<!--		Long 	-> 	Short -->
+	<option value=" ~ ~ ~ " label="§td;">
+	<option value="scoreboard" label="§s;">
+	<option value="players" label="§p;">
+	<option value="area_effect_cloud" label="§aec;">
+	<option value="armor_stand" label="§as;">
+	<option value="execute" label="§x;">
+	<option value="summon" label="§sm;">
+	<option value="setblock" label="§sb;">
+	<option value="blockdata" label="§bd;">
+	<option value="kill" label="§k;">
+	<option value="minecraft:" label="§mc;">
+	<option value="SuccessCount" label="§scn;">
+	<option value="auto:1" label="§a1;">
+	<option value="auto:0" label="§a0;">
+	<option value="playsound" label="§ps;">
+	<option value="text" label="§t;">
+	<option value="color" label="§c;">
+	<option value="entitydata" label="§ed;">
+	<option value="tellraw" label="§tr;">
+	<option value="testfor" label="§tf;">
+	<option value="redstone_block" label="§rb;">
+	<option value="redstone_block" label="§s1;">
+	<option value="master" label="§ms;">
+	<option value="voice" label="§v;">
+	<option value="block" label="§b;">
+	<option value="achievement" label="§ac;">
+	<option value="particle" label="§pr;">
+	<option value="replaceitem" label="§ri;">
+	<option value="teleport" label="§tp;">
+	<option value="CustomName:" label="§cn;">
+	<option value="reset" label="§r;">
+	<option value="Affected" label="§ef;">
+	<option value="remove" label="§rm;">
+	<option value="trigger" label="§gg;">
+	<option value="score_" label="§s_;">
+	<option value="-line" label="§l;">
+	<option value="_min=" label="§m;">
+
+	<option value="+" label="§pls;">
+	<option value="\" label="§d;">
+	<option value="]" label="§)">
+	<option value="[" label="§(">
+	<option value="}" label="§c)">
+	<option value="{" label="§c(">
+	<option value="#" label="§h;">
+	<option value="&" label="§amp;">
+	<option value="&quot;" label="'">
+</datalist>
+</body>
+</html>
